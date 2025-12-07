@@ -1,0 +1,110 @@
+/* Notification Container */
+.notification-container {
+    position: fixed;
+    /* Position container 20px from the top */
+    top: 20px; 
+    /* Center Horizontally: set left to 50% and pull back by half its width */
+    left: 50%;
+    transform: translateX(-50%); /* Only translate horizontally */
+    
+    z-index: 1000;
+    max-width: 350px;
+}
+
+/* The .notification styling remains the same */
+.notification {
+    background: white;
+    border-radius: 35px;
+    padding: 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid #4CAF50;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transform: translateY(20px); /* This is likely for an entry animation, keep it separate */
+    opacity: 1;
+    transition: all 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.notification.show {
+    transform: translateX(0);
+    opacity: 1;
+    max-height: 200px;
+}
+
+.notification.hide {
+    transform: translateX(20px);
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: 0;
+}
+
+.notification.success {
+    border-left-color: #4CAF50;
+}
+
+.notification.error {
+    border-left-color: #f44336;
+}
+
+.notification.warning {
+    border-left-color: #ff9800;
+}
+
+.notification-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.notification.success .notification-icon {
+    color: #4CAF50;
+}
+
+.notification.error .notification-icon {
+    color: #f44336;
+}
+
+.notification.warning .notification-icon {
+    color: #ff9800;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.notification-message {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.notification-close {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.notification-close:hover {
+    color: white;
+}
