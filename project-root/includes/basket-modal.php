@@ -9,7 +9,7 @@
           <p id="modal-product-info">Your item has been added to the basket.</p>
           <div class="modal-buttons">
             <button class="continue-shopping">Continue Shopping</button>
-            <a href="pages/basket.html"
+            <a href="/grizzlypaws-backend/project-root/pages/basket.php"
               ><button class="view-basket">View Basket</button></a
             >
           </div>

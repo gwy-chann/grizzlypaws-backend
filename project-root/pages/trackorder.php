@@ -11,7 +11,7 @@
     <link rel="icon" type="image/x-icon" href="../assets/images/favicon.png" />
     <link rel="stylesheet" href="../assets/css/user-profile.css" />
     <link rel="stylesheet" href="../assets/css/style.css" />
-    <link rel="stylesheet" href="../assets/css/trackorder.css">n
+    <link rel="stylesheet" href="../assets/css/trackorder.css">
   </head>
   <body>
     <?php include '../includes/header.php'; ?>
@@ -20,7 +20,7 @@
       <div class="tabs-container">
         <div class="tabs">
           <div class="tab">
-            <a href="purchase.html" class="tab-link">
+            <a href="purchase.php" class="tab-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -42,7 +42,7 @@
             </a>
           </div>
           <div class="tab">
-            <a href="wishlist.html" class="tab-link">
+            <a href="wishlist.php" class="tab-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -62,7 +62,7 @@
             </a>
           </div>
           <div class="tab active">
-            <a href="trackorder.html" class="tab-link">
+            <a href="trackorder.php" class="tab-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -178,9 +178,10 @@
     </main>
 
     <?php include '../includes/footer.php'; ?>
-    <!-- <script src="../assets/js/dynamic-display.js"></script> -->
-    <script src="../assets/js/profile.js"></script>
-
-
+    <script src="../dummy-data/category.js"></script>
+    <script src="../dummy-data/products.js"></script>
+    <script src="../assets/js/dynamic-display.js"></script>
+    <script src="../assets/js/actions.js"></script>
+    <script src="../assets/js/basket.js"></script>
   </body>
 </html>

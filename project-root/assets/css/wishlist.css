@@ -1,0 +1,155 @@
+.user-nav {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.user-tab-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.tab-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+    text-decoration: none;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+.tab-link:hover {
+    color: #006400;
+}
+
+.tab-link svg {
+    width: 18px;
+    height: 18px;
+}
+
+.tabs-container {
+    position: relative;
+    border-bottom: 1px solid #eaeaea;
+    padding-top: 30px;
+}
+
+.tabs {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.tabs::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.tab {
+    padding: 12px 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    color: #333;
+    font-weight: bold;
+    position: relative;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+.tab:hover {
+    color: #006400;
+}
+
+.tab.active {
+    color: #006400;
+    font-weight: 600;
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #006400;
+}
+
+.tab-indicator {
+    position: absolute;
+    bottom: -1px;
+    height: 2px;
+    background-color: #006400;
+    transition: all 0.3s ease;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+    .tabs-container {
+        padding-top: 5px;
+    }
+    .container {
+        padding: 10px;
+        margin: 20px auto;
+    }
+    .tab {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+    
+    .user-tab-links {
+        gap: 16px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .tabs-container {
+        padding-top: 5px;
+    }
+    .container {
+        padding: 10px;
+        margin: 20px auto;
+    }
+    .user-tab-links {
+        gap: 12px;
+    }
+    
+    .tab-link span {
+        display: none;
+    }
+    
+    .tab-link svg {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+.wishlist-banner img {
+    /* width: 100%; */
+    border-radius: 10px;
+    display: block;           /* Needed to use margin auto */
+    margin: 0 auto;           /* This centers the image horizontally */
+    height: auto;
+    max-width: 100%;
+}
+
+.wishlist-banner {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+

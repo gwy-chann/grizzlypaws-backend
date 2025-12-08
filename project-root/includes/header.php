@@ -31,7 +31,7 @@
         </div>
         <div class="basket-container">
           <a
-            href="pages/basket.html"
+            href="/grizzlypaws-backend/project-root/pages/basket.php"
             class="basket-button"
             aria-label="Shopping basket"
           >
@@ -85,8 +85,8 @@
             <div class="dropdown-content">
               <div class="dropdown-tail"></div>
               <a href="/grizzlypaws-backend/project-root/pages/user.php">My Account</a>
-              <a href="pages/Purchase/purchase.html">My Purchase</a>
-              <a href="pages/Purchase/wishlist.html">Wishlist</a>
+              <a href="/grizzlypaws-backend/project-root/pages/purchase.php">My Purchase</a>
+              <a href="/grizzlypaws-backend/project-root/pages/wishlist.php">Wishlist</a>
               <a href="login.php">Logout</a>
             </div>
           </div>
@@ -95,3 +95,4 @@
       <nav aria-label="Main navigation" id="main-nav"></nav>
     </header>
 <script src="/grizzlypaws-backend/project-root/assets/js/notification.js"></script>
+<script src="/grizzlypaws-backend/project-root/assets/js/actions.js"></script>

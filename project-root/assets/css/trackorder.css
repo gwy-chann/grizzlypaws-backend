@@ -296,7 +296,8 @@ a {
 .tabs-container {
     position: relative;
     border-bottom: 1px solid #eaeaea;
-    padding-top: 30px;
+    /* padding-top: 20px; */
+    margin-bottom: 30px;
 }
 
 .tabs {

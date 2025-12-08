@@ -31,6 +31,9 @@
 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
+        
+
         // Map database columns to frontend format
         $userData = [
             'id' => $user['customer_id'],
