@@ -490,17 +490,6 @@ if (!isset($_SESSION['user_id'])) {
     <?php include 'includes/footer.php'; ?>
     <?php include 'includes/basket-modal.php'; ?>
     <?php include 'includes/chat.php'; ?>
-
-
-    <!-- <script src="data/products.js"></script>
-    <script src="data/category.js"></script>
-    <script src="js/dynamic-display.js"></script>
-    <script src="js/actions.js"></script>
-    <script src="pages/Purchase/wishlist.js"></script>
-    <script src="js/moreProducts.js"></script>
-     <script src="js/script.js"></script> -->
-
-    <!-- re-structuring -->
     
     <script src="dummy-data/products.js"></script>
     <script src="dummy-data/category.js"></script>
