@@ -17,7 +17,7 @@ if (sub_products) {
         subCategory_display += `
         <div class="product-card">
           <div class="product-image">
-            <a href="pages/products/item/index.html?id=${product.id}&cat-id=${_category}">
+            <a href="/grizzlypaws-backend/project-root/pages/subcategory.phpl?id=${product.id}&cat-id=${_category}">
               <img src="${product.images[0]}" alt = "${product.name}"/>
             </a>
             <button
@@ -29,7 +29,7 @@ if (sub_products) {
             </button>
           </div>
 
-          <a href="pages/products/item/index.html?id=${product.id}&cat-id=${_category}" class="product-details-link">
+          <a href="/grizzlypaws-backend/project-root/pages/product-detail.php?id=${product.id}&cat-id=${_category}" class="product-details-link">
             <div class="product-details">
             
               <h3 class="product-title">${product.name}</h3>

@@ -171,7 +171,7 @@
 
         <div class="order-actions">
          
-          <button class="action-button secondary-button"> <a href="pages/products/item/index.html?id=287&cat-id=aquatic">Reorder</a></button>
+          <button class="action-button secondary-button"> <a href="pages/products/item//grizzlypaws-backend/project-root/pages/subcategory.php?id=287&cat-id=aquatic">Reorder</a></button>
           <button class="action-button primary-button">Track Package</button>
         </div>
       </div>

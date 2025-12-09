@@ -425,7 +425,7 @@
    }
    
    .title {
-     display: inline-block;
+     /* display: inline-block; */
      padding: 0 20px;
      background-color: white;
      position: relative;

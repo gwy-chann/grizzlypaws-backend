@@ -6,9 +6,9 @@ const products =[
         "category": "dog",
         "sub_category": "Dry Dog Food",
         "images": [
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 1 - Hill_s Prescription Diet/hillsPrescriptionDiet1.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 1 - Hill_s Prescription Diet/hillsPrescriptionDiet2.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 1 - Hill_s Prescription Diet/hillsPrescriptionDiet3.jpg"
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 1/hillsPrescriptionDiet1.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 1/hillsPrescriptionDiet2.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 1/hillsPrescriptionDiet3.jpg"
         ],
         "name": "Hill's Prescription Diet Canine z/d Food Sensitivities",
         "description": "Hill's Prescription Diet Canine z/d Food Sensitivities - Dietetic dry food for adult dogs with food allergies and intolerances, with a hypoallergenic recipe to help with dermatitis and hair loss, as well as reducing digestive upset.",
@@ -28,9 +28,9 @@ const products =[
         "category": "dog",
         "sub_category": "Dry Dog Food",
         "images": [
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 2 - Hill_s Prescription Diet Canine Metabolic/Hill_sPrescriptionDietCanineMetabolic1.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 2 - Hill_s Prescription Diet Canine Metabolic/Hill_sPrescriptionDietCanineMetabolic2.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 2 - Hill_s Prescription Diet Canine Metabolic/Hill_sPrescriptionDietCanineMetabolic3.jpg"
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 2/Hill_sPrescriptionDietCanineMetabolic1.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 2/Hill_sPrescriptionDietCanineMetabolic2.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 2/Hill_sPrescriptionDietCanineMetabolic3.jpg"
         ],
         "name": "Hill's Prescription Diet Canine Metabolic+Mobility Weight+Joint Care Chicken",
         "description": "Specialist dry food for overweight dogs suffering from osteoarthritis. The clinically proven formula is filling yet lean and contains calcium, chondroitin & glucosamine for healthy bones & joints",
@@ -38,17 +38,17 @@ const products =[
             {
                 "unit": "Prescription",
                 "price": 3199
-            }
-        ]
+                }
+            ]
     },
     {
         "id": 3,
         "category": "dog",
         "sub_category": "Dry Dog Food",
         "images": [
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 3 - Royal Canin Maxi Adult/RoyalCaninMaxiAdult1.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 3 - Royal Canin Maxi Adult/RoyalCaninMaxiAdult2.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 3 - Royal Canin Maxi Adult/RoyalCaninMaxiAdult3.jpg"
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 3/RoyalCaninMaxiAdult1.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 3/RoyalCaninMaxiAdult2.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 3/RoyalCaninMaxiAdult3.jpg"
         ],
         "name": "Royal Canin Maxi Adult",
         "description": "Balanced dry food for large breed adult dogs, designed to promote optimum digestion, a source of glucosamine and chondroitin, enriched with vitamin D and antioxidants, with a tailored kibble size",
@@ -68,9 +68,9 @@ const products =[
         "category": "dog",
         "sub_category": "Dry Dog Food",
         "images": [
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 4 - Royal Canin Medium Adult/RoyalCaninMediumAdult1.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 4 - Royal Canin Medium Adult/RoyalCaninMediumAdult2.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 4 - Royal Canin Medium Adult/RoyalCaninMediumAdult3.jpg"
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 4/RoyalCaninMediumAdult1.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 4/RoyalCaninMediumAdult2.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 4/RoyalCaninMediumAdult3.jpg"
         ],
         "name": "Royal Canin Medium Adult",
         "description": "Balanced dry food for adult dogs of medium-sized breeds, provides high-quality proteins, highly-digestible ingredients, source of antioxidants, with a tailored kibble size.Balanced dry food for adult dogs of medium-sized breeds, provides high-quality proteins, highly-digestible ingredients, source of antioxidants, with a tailored kibble size.",
@@ -94,144 +94,61 @@ const products =[
         "category": "dog",
         "sub_category": "Dry Dog Food",
         "images": [
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 5 - Hill_s Prescription Diet Canine i-d Digestive Care/Hill_sPrescriptionDietCanineDigestiveCare1.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 5 - Hill_s Prescription Diet Canine i-d Digestive Care/Hill_sPrescriptionDietCanineDigestiveCare2.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 5 - Hill_s Prescription Diet Canine i-d Digestive Care/Hill_sPrescriptionDietCanineDigestiveCare3.jpg"
-        ],
-        "name": "Hill's Prescription Diet Canine i/d Digestive Care - Chicken",
-        "description": "Highly-digestible dietetic complete food for dogs or puppies with gastrointestinal issues, helping to relieve acute resorption disruption and balance digestion, with a high electrolyte content.",
-        "variations": [
-            {
-                "unit": "6kg",
-                "price": 1200
-            },
-            {
-                "unit": "12kg",
-                "price": 1700
-            },
-            {
-                "unit": "15kg",
-                "price": 1999
-            }
-        ]
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 5/Hill_sPrescriptionDietCanineDigestiveCare1.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 5/Hill_sPrescriptionDietCanineDigestiveCare2.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 5/Hill_sPrescriptionDietCanineDigestiveCare3.jpg"
+    ]
     },
     {
         "id": 6,
         "category": "dog",
         "sub_category": "Dry Dog Food",
         "images": [
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 6 - Burns Adult & Senior Original Chicken & Brown Rice/BurnsAdult&SeniorOriginalChicken&BrownRice1.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 6 - Burns Adult & Senior Original Chicken & Brown Rice/BurnsAdult&SeniorOriginalChicken&BrownRice2.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 6 - Burns Adult & Senior Original Chicken & Brown Rice/BurnsAdult&SeniorOriginalChicken&BrownRice3.jpg"
-        ],
-        "name": "Burns Adult & Senior Original Chicken & Brown Rice",
-        "description": "Wheat-free dry food for adult & older dogs, low-fat recipe, without soy & dairy products, natural ingredients, high in fiber, valuable fatty acids, easily digestible, tasty.",
-        "variations": [
-            {
-                "unit": "6kg",
-                "price": 799
-            },
-            {
-                "unit": "12kg",
-                "price": 1200
-            },
-            {
-                "unit": "16kg",
-                "price": 1999
-            }
-        ]
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 6/BurnsAdult&SeniorOriginalChicken&BrownRice1.jpg",
+            "/grizzlypaws-backend-project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 6/BurnsAdult&SeniorOriginalChicken&BrownRice2.jpg",
+            "/grizzlypaws-backend-project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 6/BurnsAdult&SeniorOriginalChicken&BrownRice3.jpg"
+    ]
     },
     {
         "id": 7,
         "category": "dog",
         "sub_category": "Dry Dog Food",
         "images": [
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 7 - Royal Canin Veterinary Canine Hypoallergenic/RoyalCaninVeterinaryCanineHypoallergenic1.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 7 - Royal Canin Veterinary Canine Hypoallergenic/RoyalCaninVeterinaryCanineHypoallergenic2.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 7 - Royal Canin Veterinary Canine Hypoallergenic/RoyalCaninVeterinaryCanineHypoallergenic3.jpg"
-        ],
-        "name": "Royal Canin Veterinary Canine Hypoallergenic",
-        "description": "Hypoallergenic dietetic dry dog food for adult dogs prone to dietary intolerances and allergies made with hydrolysed proteins, EPA and DHA, ideal for supporting dermatosis and excessive hair loss.",
-        "variations": [
-            {
-                "unit": "2kg",
-                "price": 399
-            },
-            {
-                "unit": "7kg",
-                "price": 899
-            },
-            {
-                "unit": "14kg",
-                "price": 1799
-            }
-        ]
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 7/RoyalCaninVeterinaryCanineHypoallergenic1.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 7/RoyalCaninVeterinaryCanineHypoallergenic2.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 7/RoyalCaninVeterinaryCanineHypoallergenic3.jpg"
+    ]
     },
     {
         "id": 8,
         "category": "dog",
         "sub_category": "Dry Dog Food",
         "images": [
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 8 - Royal Canin Yorkshire Terrier Adult Loaf/RoyalCaninYorkshireTerrierAdultLoaf1.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 8 - Royal Canin Yorkshire Terrier Adult Loaf/RoyalCaninYorkshireTerrierAdultLoaf2.jpg"
-        ],
-        "name": "Royal Canin Yorkshire Terrier Adult Loaf",
-        "description": "Tailored wet dog food for adult Yorkshire Terriers over the age of 10 months, in a tasty loaf with an appetising recipe designed for high acceptance, helping to support digestion, skin and coat health",
-        "variations": [
-            {
-                "unit": "12 x 85g",
-                "price": 799
-            },
-            {
-                "unit": "24 x 85g",
-                "price": 999
-            }
-        ]
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 8/RoyalCaninYorkshireTerrierAdultLoaf1.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 8/RoyalCaninYorkshireTerrierAdultLoaf2.jpg"
+    ]
     },
     {
         "id": 9,
         "category": "dog",
         "sub_category": "Dry Dog Food",
         "images": [
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 9 - Royal Canin Veterinary Canine - Satiety Weight Management/RoyalCaninVeterinaryCanineSatietyWeightManagement1.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 9 - Royal Canin Veterinary Canine - Satiety Weight Management/RoyalCaninVeterinaryCanineSatietyWeightManagement2.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 9 - Royal Canin Veterinary Canine - Satiety Weight Management/RoyalCaninVeterinaryCanineSatietyWeightManagement3.jpg"
-        ],
-        "name": "Royal Canin Veterinary Canine - Satiety Weight Management",
-        "description": "Complete dietetic dry food for overweight adult dogs older than 1 year. The low energy density helps with weight management, while the high protein content supports muscle mass maintenance.",
-        "variations": [
-            {
-                "unit": "2kg",
-                "price": 499
-            },
-            {
-                "unit": "7kg",
-                "price": 799
-            },
-            {
-                "unit": "14kg",
-                "price": 1799
-            }
-        ]
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 9/RoyalCaninVeterinaryCanineSatietyWeightManagement1.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 9/RoyalCaninVeterinaryCanineSatietyWeightManagement2.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 9/RoyalCaninVeterinaryCanineSatietyWeightManagement3.jpg"
+    ]
     },
     {
         "id": 10,
         "category": "dog",
         "sub_category": "Dry Dog Food",
         "images": [
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 10 - Black Angus Adult/BlackAngusAdult1.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 10 - Black Angus Adult/BlackAngusAdult2.jpg",
-            "../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 10 - Black Angus Adult/BlackAngusAdult3.jpg"
-        ],
-        "name": "Black Angus Adult",
-        "description": "A delicious complete dry dog food from Markus Mühle, optimally suited to the needs of dogs over 12 months, with green-lipped mussel extract.",
-        "variations": [
-            {
-                "unit": "15kg",
-                "price": 4799
-            }
-        ]
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 10/BlackAngusAdult1.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 10/BlackAngusAdult2.jpg",
+            "/grizzlypaws-backend/project-root/assets/images/product-images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 10/BlackAngusAdult3.jpg"
+    ]
     },
+
     {
         "id": 11,
         "category": "dog",

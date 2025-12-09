@@ -11,7 +11,7 @@ if (moreProducts.length > 0) { // Better to check array length
         htmlString += `
         <div class="product-card">
           <div class="product-image">
-            <a href="pages/products/item/index.html?id=${product.id}&cat-id=dog">
+            <a href="/grizzlypaws-backend/project-root/pages/product-detail.php?id=${product.id}&cat-id=dog">
               <img src="${product.images[0]}" alt="${product.name}"/>
             </a>
             <button
@@ -23,7 +23,7 @@ if (moreProducts.length > 0) { // Better to check array length
             </button>
           </div>
 
-          <a href="pages/products/item/index.html?id=${product.id}&cat-id=dog" class="product-details-link">
+          <a href="/grizzlypaws-backend/project-root/pages/product-detail.php?id=${product.id}&cat-id=dog" class="product-details-link">
             <div class="product-details">
               <h3 class="product-title">${product.name}</h3>
               <div class="price-container">
