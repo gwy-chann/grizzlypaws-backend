@@ -304,7 +304,7 @@
    /* ==========================================================================
       6. Main Content Area
       ========================================================================== */
-   .main-content {
+   .main-banner {
      display: flex;
      flex-wrap: nowrap;
      justify-content: center;
@@ -2412,7 +2412,7 @@
     max-width: 100%;
   }
 
-  .main-content {
+  .main-banner {
     flex-direction: column;
   }
 
@@ -2447,7 +2447,7 @@
     margin: 30px auto;
   }
   
-  .main-content {
+  .main-banner {
     flex-direction: column;
   }
 

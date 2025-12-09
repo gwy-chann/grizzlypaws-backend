@@ -33,7 +33,6 @@
     setupEventListeners();
     updateWriteReviewButton();
     setupStarRating(); // NEW: Setup star rating functionality
-    updateProductRating(); // NEW: Update product rating display
   }
 
   // Load current user from session
@@ -201,38 +200,6 @@
     return (sum / productReviews.length).toFixed(1);
   }
 
-  // NEW: Update product rating display in product info section
-  function updateProductRating() {
-    const avgRating = calculateAverageRating();
-    const productReviews = reviews.filter(r => r.productId === PRODUCT_ID && !r.isHidden);
-    const reviewCount = productReviews.length;
-
-    // Find the rating div in product-info section
-    const productRatingDiv = document.querySelector('.product-info .rating');
-    
-    if (productRatingDiv) {
-      // Clear existing content
-      productRatingDiv.innerHTML = '';
-      
-      if (reviewCount > 0) {
-        // Create rating display with stars and average
-        productRatingDiv.innerHTML = `
-          <div class="average-rating-display">
-            <span class="average-rating-number">${avgRating}</span>
-            <div class="average-rating-stars">${renderStars(Math.round(avgRating))}</div>
-            <span class="review-count-text">(${reviewCount} ${reviewCount === 1 ? 'review' : 'reviews'})</span>
-          </div>
-        `;
-      } else {
-        // No reviews yet
-        productRatingDiv.innerHTML = `
-          <div class="stars">${renderStars(0)}</div>
-          <span class="review-count">No reviews yet</span>
-        `;
-      }
-    }
-  }
-
   // Setup Event Listeners
   function setupEventListeners() {
     writeReviewBtn.addEventListener('click', openNewReviewModal);
@@ -290,67 +257,94 @@
       .slice(0, 2);
   }
 
-  // UPDATED: Render all reviews (without modifying the header)
-  function renderReviews() {
-    // Filter reviews for current product
-    const productReviews = reviews.filter(r => r.productId === PRODUCT_ID);
+  // UPDATED: Render all reviews with star ratings
+  // UPDATED: Render all reviews with star ratings
+function renderReviews() {
+  // Filter reviews for current product
+  const productReviews = reviews.filter(r => r.productId === PRODUCT_ID);
 
-    // Update product rating display
-    updateProductRating();
-
-    if (productReviews.length === 0) {
-      reviewsContainer.innerHTML = `
-        <div class="no-reviews">
-          <i class="fas fa-comments"></i>
-          <p>No reviews yet</p>
-          <p style="font-size: 14px; color: #aaa;">Be the first to share your thoughts!</p>
-        </div>
-      `;
-      return;
+  // NEW: Update reviews header with average rating
+  const avgRating = calculateAverageRating();
+  const reviewCount = productReviews.filter(r => !r.isHidden).length;
+  
+  // UPDATE: Only update the header content, not the entire header
+  const reviewsHeader = document.querySelector('.reviews-header');
+  if (reviewsHeader) {
+    // Check if header content already exists
+    let headerContent = reviewsHeader.querySelector('.reviews-header-content');
+    if (!headerContent) {
+      // Create header content for the first time
+      headerContent = document.createElement('div');
+      headerContent.className = 'reviews-header-content';
+      reviewsHeader.insertBefore(headerContent, reviewsHeader.firstChild);
     }
-
-    // Sort reviews by date (newest first)
-    const sortedReviews = [...productReviews].sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    reviewsContainer.innerHTML = sortedReviews.map(review => {
-      const isOwnReview = CURRENT_USER && review.userId === CURRENT_USER.userId;
-      
-      return `
-        <div class="review-card" data-review-id="${review.id}">
-          <div class="review-header">
-            <div class="reviewer-info">
-              <div class="reviewer-avatar">
-                ${getUserInitials(review.userName)}
-              </div>
-              <div class="reviewer-details">
-                <h4>${escapeHtml(review.userName)}</h4>
-                ${review.rating ? `
-                  <div class="review-rating">
-                    <div class="review-stars">${renderStars(review.rating)}</div>
-                  </div>
-                ` : ''}
-                <div class="review-date">${formatDate(review.date)}</div>
-              </div>
-            </div>
-            ${isOwnReview ? `
-              <div class="review-actions">
-                <button class="review-action-btn edit" onclick="editReview(${review.id})">
-                  <i class="fas fa-edit"></i> Edit
-                </button>
-                <button class="review-action-btn delete" onclick="deleteReview(${review.id})">
-                  <i class="fas fa-trash"></i> Delete
-                </button>
-              </div>
-            ` : ''}
-          </div>
-          ${review.isHidden ? 
-            '<div class="review-hidden">Review hidden by the admin</div>' : 
-            `<div class="review-content">${escapeHtml(review.text)}</div>`
-          }
+    
+    // Update only the header content (not the button)
+    headerContent.innerHTML = `
+      <h2>Customer Reviews</h2>
+      ${reviewCount > 0 ? `
+        <div class="average-rating-display">
+          <span class="average-rating-number">${avgRating}</span>
+          <div class="average-rating-stars">${renderStars(Math.round(avgRating))}</div>
+          <span class="review-count-text">(${reviewCount} ${reviewCount === 1 ? 'review' : 'reviews'})</span>
         </div>
-      `;
-    }).join('');
+      ` : ''}
+    `;
   }
+
+  if (productReviews.length === 0) {
+    reviewsContainer.innerHTML = `
+      <div class="no-reviews">
+        <i class="fas fa-comments"></i>
+        <p>No reviews yet</p>
+        <p style="font-size: 14px; color: #aaa;">Be the first to share your thoughts!</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Sort reviews by date (newest first)
+  const sortedReviews = [...productReviews].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  reviewsContainer.innerHTML = sortedReviews.map(review => {
+    const isOwnReview = CURRENT_USER && review.userId === CURRENT_USER.userId;
+    
+    return `
+      <div class="review-card" data-review-id="${review.id}">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar">
+              ${getUserInitials(review.userName)}
+            </div>
+            <div class="reviewer-details">
+              <h4>${escapeHtml(review.userName)}</h4>
+              ${review.rating ? `
+                <div class="review-rating">
+                  <div class="review-stars">${renderStars(review.rating)}</div>
+                </div>
+              ` : ''}
+              <div class="review-date">${formatDate(review.date)}</div>
+            </div>
+          </div>
+          ${isOwnReview ? `
+            <div class="review-actions">
+              <button class="review-action-btn edit" onclick="editReview(${review.id})">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+              <button class="review-action-btn delete" onclick="deleteReview(${review.id})">
+                <i class="fas fa-trash"></i> Delete
+              </button>
+            </div>
+          ` : ''}
+        </div>
+        ${review.isHidden ? 
+          '<div class="review-hidden">Review hidden by the admin</div>' : 
+          `<div class="review-content">${escapeHtml(review.text)}</div>`
+        }
+      </div>
+    `;
+  }).join('');
+}
 
   // Escape HTML to prevent XSS
   function escapeHtml(text) {

@@ -31,7 +31,7 @@ if (!isset($_SESSION['user_id'])) {
     <?php include 'includes/header.php'; ?>
 
     <main class="container">
-      <div class="main-content">
+      <div class="main-banner">
         <div class="hero-container">
           <div class="hero-image">
             <img
