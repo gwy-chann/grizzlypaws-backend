@@ -1295,7 +1295,7 @@
             formData.append('image3', 'no-image.png');
 
 
-            fetch('../admin/api/add_product.php', {
+            fetch('http://localhost/grizzlypaws-backend/admin/api/add_product.php', {
                 method: 'POST',
                 body: formData
             })
@@ -1433,8 +1433,8 @@
             }
         });
         
-           function loadProducts() {
-            fetch('../admin/api/get_products.php')
+        function loadProducts() {
+            fetch('http://localhost/grizzlypaws-backend/admin/api/get_products.php')
                 .then(res => res.json())
                 .then(data => {
                     productsTableBody.innerHTML = '';

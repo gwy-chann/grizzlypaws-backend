@@ -1,83 +1,108 @@
-function addToCart(orderDetails) {
-  const product = products.find((product) => product.id == orderDetails.id);
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-  const selectedVariation = product.variations.find(variation => variation.unit === orderDetails.unit);
-  
-  const price = selectedVariation ? selectedVariation.price : product.variations[0].price;
-  const unit = selectedVariation ? selectedVariation.unit : product.variations[0].unit;
-  const quantity = orderDetails.quantity || 1;
-  const existingProductIndex = cart.findIndex(item => 
-      item.id == orderDetails.id && item.unit == unit
+async function addToCart(orderDetails) {
+  const response = await fetch(
+    `http://localhost/grizzlypaws-backend/admin/api/get_products.php?product-id=${orderDetails.id}
+    }`
   );
- 
-  if (existingProductIndex !== -1) {
-      cart[existingProductIndex].quantity += quantity;
-      cart[existingProductIndex].totalPrice = price * cart[existingProductIndex].quantity;
-  } else {
-      const cartItem = {
-          id: product.id,
-          name: product.name,
-          quantity: quantity,
-          price: price,
-          unit: unit,
-          totalPrice: price * quantity
-      };
-      cart.push(cartItem);
+
+  const data = await response.json();
+  const product = data[0];
+
+  try {
+    console.log("Product to add:", product);
+    const response = await fetch(
+      `http://localhost/grizzlypaws-backend/project-root/api/cart.php`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          user_id: 1, // Replace with actual user ID
+          product_id: product.id,
+          variation_id: product.variations[0].id,
+          quantity: 1,
+          final_price: 1 * product.variations[0].price,
+        }).toString(),
+      }
+    );
+
+    const data = await response.json();
+    console.log("Adding to cart:", orderDetails, data);
+
+    if (response.ok) {
+
+      
+      showSuccessModal({
+        quantity: 1,
+        title: product.name,
+        unit: product.variations[0].unit,
+      });
+    }
+  } catch (error) {
+    console.error("Error adding to cart:", error);
   }
 
-  localStorage.setItem('cart', JSON.stringify(cart));
-  
-  return cart;
 }
 
-
-const modal = document.getElementById("myModal");
-const closeBtn = document.querySelector(".close");
+// const modal = document.getElementById("myModal");
+// const closeBtn = document.querySelector(".close");
 // const addToCartBtn = document.getElementById("myBasket");
 const continueShoppingBtn = document.querySelector(".continue-shopping");
 const viewBasketBtn = document.querySelector(".view-basket");
-const modalProductInfo = document.getElementById("modal-product-info");
-
+// const modalProductInfo = document.getElementById("modal-product-info");
 
 // Function to show the modal with product details
-function showSuccessModal(productId) {
-    const product = products.find((product) => product.id == productId)
+function showSuccessModal(product) {
 
-    // Get product info
-    const productTitle = product.name;
-    const selectedSize = document.getElementById("custom_select")?.value || product.variations[0].unit;
-    const quantity = document.querySelector(".quantity-input")?.value || 1;
-    
-    // Update modal message with product details
-    modalProductInfo.textContent = `${quantity} × ${productTitle} (${selectedSize}) has been added to your basket.`;
-    
-    modal.style.display = "block";
-    
-    // Prevent scrolling on the body while modal is open
-    document.body.style.overflow = "hidden";
+  // Update modal message with product details
+  document.getElementById(
+    "modal-product-info"
+  ).textContent = `${product.quantity} × ${product.title} (${product.unit}) has been added to your basket.`;
+
+  document.getElementById("myModal").style.display = "block";
+
+  // Prevent scrolling on the body while modal is open
+  document.body.style.overflow = "hidden";
+}
+
+// Close modal when clicking outside of it
+window.addEventListener("click", function (event) {
+  if (event.target === getModal()) {
+    closeModal();
   }
-  
-  // Function to close the modal
-  function closeModal() {
-    modal.style.display = "none";
-    document.body.style.overflow = "auto"; // Re-enable scrolling
+});
+
+// Optional: Close modal with ESC key
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape" && modal.style.display === "block") {
+    closeModal();
   }
+});
 
-  // Close modal when clicking outside of it
-window.addEventListener("click", function(event) {
-    if (event.target === modal) {
-      closeModal();
-    }
-  });
-  
-  // Optional: Close modal with ESC key
-  document.addEventListener("keydown", function(event) {
-    if (event.key === "Escape" && modal.style.display === "block") {
-      closeModal();
-    }
-  });
+function getModal() {
+  return document.getElementById("myModal");
+}
 
+function closeModal() {
+  const modal = getModal();
+  if (!modal) return;
+  modal.style.display = "none";
+  document.body.style.overflow = "auto"; // Re-enable scrolling
+}
 
-closeBtn.addEventListener("click", closeModal);
-continueShoppingBtn.addEventListener("click", closeModal);
+document.addEventListener("keydown", function (event) {
+  const modal = getModal();
+  if (event.key === "Escape" && modal && modal.style.display === "block") {
+    closeModal();
+  }
+});
+
+// Use event delegation so listeners work even if .close/.continue-shopping are added later
+document.addEventListener("click", function (event) {
+  if (
+    event.target.closest(".close") ||
+    event.target.closest(".continue-shopping")
+  ) {
+    closeModal();
+  }
+});

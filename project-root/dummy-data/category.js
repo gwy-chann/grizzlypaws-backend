@@ -62,7 +62,7 @@ const pageDetails = {
 const subCategory = {
   dog: [
     {
-      link: "pages/products/index.html?sub-cat-id=Dry Dog Food&cat-id=dog",
+      link: "/grizzlypaws-backend/project-root/index.php?sub-cat-id=Dry Dog Food&cat-id=dog",
       id: 1,
       img: "/grizzlypaws-backend/project-root/assets/images/dog-category/Dry Dog Food.jpeg",
       name: "Dry Dog Food",

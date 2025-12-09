@@ -95,43 +95,19 @@
                 </div>
 
                 <div class="categories-grid" id="categoriesGrid">
-                    <!-- <a href="dog-dry-food-products.html" class="category-card">
+                 
+                <a href="dog-dry-food-products.html" class="category-card">
                         <div class="title">Dry Dog Food</div>
                         <div class="category-image">
                             <img src="https://shop-cdn-m.mediazs.com/bilder/1/400/Cat_Dryfood_1000x1000_1.jpg" alt="Dry Dog Food">
                         </div>
-                    </a> -->    
+                    </a>    
                 </div>
 
                 <!-- Related Products Section -->
                 <h2 class="simillarProducts">Related products</h2>
                 <div class="products-grid" id="product_grid">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <a href="pages/products/item/index.html?id=1">
-                                <img src="images/Hill'sPrescriptionDietCanineDigestiveCare1.jpg" alt="Hill's Prescription Diet Canine Metabolic" />
-                            </a>
-                            <button class="add-to-basket-button" aria-label="Add to basket">
-                                <i class="fas fa-shopping-cart" aria-hidden="true"></i>
-                            </button>
-                        </div>
-
-                        <a href="pages/products/item/index.html?id=1" class="product-details-link">
-                            <div class="product-details">
-                                <h3 class="product-title">
-                                    Hill's Prescription Diet Canine Metabolic Weight Management - Chicken
-                                </h3>
-                                <div class="price-container">
-                                    <p class="price">£96.99</p>
-                                </div>
-                                <div class="ratings">
-                                    <!-- <div class="stars">★★★★★</div> -->
-                                    <div class="review-count">(14)</div>
-                                </div>
-                                <p class="delivery">Delivery in 3-6 working days</p>
-                            </div>
-                        </a>
-                    </div>
+                    <p> Loading ... </p>
                 </div>
             </div>
         </div>
@@ -155,13 +131,18 @@
         </div>
       </div>
     </div>
-
+    test
+    <?php include '../includes/basket-modal.php'; ?>
     <?php include '../includes/footer.php'; ?>
     <script src="../dummy-data/category.js"></script>
     <script src="../dummy-data/products.js"></script>
+
     <script src="../assets/js/dynamic-display.js"></script>
+
+    <!-- <script src="../assets/js/related-products.js"></script> -->
+    <!-- <script src="../assets/js/filter-product.js"></script> -->
+    <script src="../assets/js/products.js"></script>
     <script src="../assets/js/actions.js"></script>
-    <script src="../assets/js/related-products.js"></script>
-    <script src="../assets/js/filter-product.js"></script>
+    <script src="../assets/js/more-products.js"></script>
   </body>
 </html>

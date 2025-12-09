@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="../assets/css/user-profile.css" />
     <link rel="stylesheet" href="../assets/css/style.css" />
     <link rel="stylesheet" href="../assets/css/subcategory.css">
-    
   </head>
   <body>
     <?php include '../includes/header.php'; ?>
