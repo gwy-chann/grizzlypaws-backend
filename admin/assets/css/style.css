@@ -466,6 +466,23 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+.btn-update-product {
+    padding: 8px 16px;
+    background-color: #235523;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.add-product:hover {
+    background-color: #1a411a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
 .filter-section {
     display: flex;
     gap: 15px;

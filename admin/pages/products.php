@@ -74,8 +74,30 @@
         .photo-upload-box.has-image .upload-icon,
         .photo-upload-box.has-image .upload-text {
             display: none;
+            
         }
 
+        .edit-product-btn {
+    padding: 8px 16px;
+    background: #83a75d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.3s;
+}
+
+.edit-product-btn:hover {
+    background: #6d8a4a;
+}
+
+.edit-product-btn i {
+    font-size: 12px;
+}
         .remove-photo-btn {
             position: absolute;
             top: 5px;
@@ -265,7 +287,7 @@
 
         .remove-variation-btn {
             padding: 8px 10px;
-            background: #dc3545;
+            /* background: #dc3545; */
             color: white;
             border: none;
             border-radius: 4px;
@@ -337,72 +359,303 @@
     
         <!-- Main Content Area -->
         <div class="content">
-            <h1 class="dashboard-title">Products</h1>
+    <h1 class="dashboard-title">Products</h1>
 
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by product name, category, or sub-category..." />
+            <i class="fas fa-search"></i>
+        </div>
 
-            <div class="controls">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Search by product name, category, or sub-category..." />
-                    <i class="fas fa-search"></i>
-                </div>
-
-                <div class="filter-section">
-                    <select id="subcategory-filter" class="subcategory-dropdown">
-                    </select>
-                    
-                    <select id="category-filter" class="category-dropdown">
-                        <option value="all">All Products</option>
-                        <option value="dog">Dog</option>
-                        <option value="cat">Cat</option>
-                        <option value="small-pet">Small Pet</option>
-                        <option value="feathered">Feathered</option>
-                        <option value="aquatic">Aquatic</option>
-                    </select>
-                </div>
-
-            </div>
-
+        <div class="filter-section">
+            <select id="subcategory-filter" class="subcategory-dropdown">
+            </select>
             
+            <select id="category-filter" class="category-dropdown">
+                <option value="all">All Products</option>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="small-pet">Small Pet</option>
+                <option value="feathered">Feathered</option>
+                <option value="aquatic">Aquatic</option>
+            </select>
+        </div>
+    </div>
 
-            <!-- Products Table -->
-            <div class="products-table-container">
-                <table class="products-table">
-                    <thead>
-                        <tr>
-                            <th>ProductID</th>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Sub Category</th>
-                            <th>Photos</th>
-                            <th>Variations</th>
-                            <th>Stocks</th>
-                            <th>Price</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="products-table-body"></tbody>
+    <!-- Products Table -->
+    <div class="products-table-container">
+        <table class="products-table">
+            <thead>
+                <tr>
+                    <th>ProductID</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Sub Category</th>
+                    <th>Photos</th>
+                    <th>Variations</th>
+                    <th>Total Stock</th>
+                    <th>Base Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="products-table-body"></tbody>
+        </table>
+        
+        <div class="pagination">
+            <div class="pagination-content">
+                <div class="page-numbers">
+                    <button class="page-btn prev-btn">&lt;</button>
+                    <button class="page-number active">1</button>
+                    <button class="page-btn next-btn">&gt;</button>
+                </div>
+                <button class="add-product-btn" id="addProductBtn">
+                    <i class="fas fa-plus"></i>
+                    Add Product
+                </button>
+            </div>
+        </div>
+    </div>
 
-                </table>
-                
-                <div class="pagination">
-                    <div class="pagination-content">
-                        <div class="page-numbers">
-                            <button class="page-btn prev-btn">&lt;</button>
-                            <button class="page-number active">1</button>
-                            <button class="page-btn next-btn">&gt;</button>
-                        </div>
-                        <button class="add-product-btn" id="addProductBtn">
-                            <i class="fas fa-plus"></i>
-                            Add Product
-                        </button>
+    <div class="footer">
+        Copyright © 2025 GrizzlyPaws. All rights reserved
+    </div>
+</div>
+
+<!-- MODALS -->
+
+<!-- Add Product Modal -->
+<div id="addProductModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Add New Product</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="newProductId">Product ID:</label>
+                    <input type="text" id="newProductId" class="form-input" placeholder="Auto-generated" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="newProductName">Product Name:</label>
+                    <input type="text" id="newProductName" class="form-input" placeholder="Enter product name">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="newProductCategory">Category:</label>
+                    <select id="newProductCategory" class="form-select">
+                        <option value="">Select Category</option>
+                        <option value="1">Dog</option>
+                        <option value="2">Cat</option>
+                        <option value="3">Small Pet</option>
+                        <option value="4">Feathered</option>
+                        <option value="5">Aquatic</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="newProductSubCategory">Sub-Category:</label>
+                    <select id="newProductSubCategory" class="form-select">
+                        <option value="">Select Sub-Category</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Product Photos (up to 3):</label>
+                <div class="photo-upload-container" id="addProductPhotos">
+                    <div class="photo-upload-box" data-index="0">
+                        <input type="file" accept="image/*">
+                        <i class="fas fa-camera upload-icon"></i>
+                        <span class="upload-text">Add Photo</span>
+                        <img class="photo-preview" alt="Preview">
+                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="photo-upload-box" data-index="1">
+                        <input type="file" accept="image/*">
+                        <i class="fas fa-camera upload-icon"></i>
+                        <span class="upload-text">Add Photo</span>
+                        <img class="photo-preview" alt="Preview">
+                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="photo-upload-box" data-index="2">
+                        <input type="file" accept="image/*">
+                        <i class="fas fa-camera upload-icon"></i>
+                        <span class="upload-text">Add Photo</span>
+                        <img class="photo-preview" alt="Preview">
+                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
                     </div>
                 </div>
             </div>
-
-            <div class="footer">
-                Copyright © 2025 GrizzlyPaws. All rights reserved
+            <div class="form-group">
+                <label>Product Variations:</label>
+                <div class="variations-container" id="addProductVariations">
+                    <div class="variations-header">
+                        <h4>Add Variations (e.g., weight, size)</h4>
+                        <button type="button" class="add-variation-btn" id="addNewVariation">
+                            <i class="fas fa-plus"></i>
+                            Add Variation
+                        </button>
+                    </div>
+                    <div id="variationsList">
+                        <div class="variation-item" data-index="0">
+                            <div class="form-group">
+                                <label>Variation Name:</label>
+                                <input type="text" class="variation-name" placeholder="e.g., 15kg, Large">
+                            </div>
+                            <div class="form-group">
+                                <label>Stock:</label>
+                                <input type="number" class="variation-stock" placeholder="Enter stock" min="0" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Price (₱):</label>
+                                <input type="number" class="variation-price" placeholder="Enter price" min="0" step="0.01">
+                            </div>
+                            <button type="button" class="remove-variation-btn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="newProductTotalStock">Total Stock (Auto-calculated):</label>
+                    <input type="number" id="newProductTotalStock" class="form-input" disabled value="0">
+                </div>
+                <div class="form-group">
+                    <label for="newProductBasePrice">Base Price (₱):</label>
+                    <input type="number" id="newProductBasePrice" class="form-input" placeholder="Enter base price" min="0" step="0.01">
+                </div>
             </div>
         </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cancel">Cancel</button>
+            <button type="button" class="btn-add">Add Product</button>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Product Modal -->
+<div id="editProductModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Edit Product</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editProductId">Product ID:</label>
+                    <input type="text" id="editProductId" class="form-input" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="editProductName">Product Name:</label>
+                    <input type="text" id="editProductName" class="form-input" placeholder="Enter product name">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editProductCategory">Category:</label>
+                    <select id="editProductCategory" class="form-select">
+                        <option value="">Select Category</option>
+                        <option value="1">Dog</option>
+                        <option value="2">Cat</option>
+                        <option value="3">Small Pet</option>
+                        <option value="4">Feathered</option>
+                        <option value="5">Aquatic</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editProductSubCategory">Sub-Category:</label>
+                    <select id="editProductSubCategory" class="form-select">
+                        <option value="">Select Sub-Category</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Product Photos (up to 3):</label>
+                <div class="photo-upload-container" id="editProductPhotos">
+                    <div class="photo-upload-box" data-index="0">
+                        <input type="file" accept="image/*">
+                        <i class="fas fa-camera upload-icon"></i>
+                        <span class="upload-text">Add Photo</span>
+                        <img class="photo-preview" alt="Preview">
+                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="photo-upload-box" data-index="1">
+                        <input type="file" accept="image/*">
+                        <i class="fas fa-camera upload-icon"></i>
+                        <span class="upload-text">Add Photo</span>
+                        <img class="photo-preview" alt="Preview">
+                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="photo-upload-box" data-index="2">
+                        <input type="file" accept="image/*">
+                        <i class="fas fa-camera upload-icon"></i>
+                        <span class="upload-text">Add Photo</span>
+                        <img class="photo-preview" alt="Preview">
+                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Product Variations:</label>
+                <div class="variations-container" id="editProductVariations">
+                    <div class="variations-header">
+                        <h4>Manage Variations</h4>
+                        <button type="button" class="add-variation-btn" id="addEditVariation">
+                            <i class="fas fa-plus"></i>
+                            Add Variation
+                        </button>
+                    </div>
+                    <div id="editVariationsList">
+                        <!-- Variations will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editProductTotalStock">Total Stock (Auto-calculated):</label>
+                    <input type="number" id="editProductTotalStock" class="form-input" disabled value="0">
+                </div>
+                <div class="form-group">
+                    <label for="editProductBasePrice">Base Price (₱):</label>
+                    <input type="number" id="editProductBasePrice" class="form-input" placeholder="Enter base price" min="0" step="0.01">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cancel">Cancel</button>
+            <button type="button" class="btn-update-product">Update Product</button>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteConfirmationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Delete Product</h3>
+        </div>
+        <div class="modal-body">
+            <div class="delete-confirmation">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h4>Are you sure?</h4>
+                <p>This action cannot be undone. This will permanently delete the product <strong id="deleteProductName"></strong>.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cancel">Cancel</button>
+            <button type="button" class="btn-delete">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Photo Viewer Modal -->
+<div id="photoViewerModal" class="photo-viewer-modal">
+    <div class="photo-viewer-content">
+        <button class="photo-viewer-close">&times;</button>
+        <img class="photo-viewer-image" id="photoViewerImage" alt="Product Photo">
+    </div>
+</div>
     </div>
 
     <!-- MODALS -->
@@ -512,6 +765,114 @@
             </div>
         </div>
     </div>
+
+    <div id="editProductModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Edit Product</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editProductId">Product ID:</label>
+                    <input type="text" id="editProductId" class="form-input" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="editProductName">Product Name:</label>
+                    <input type="text" id="editProductName" class="form-input" placeholder="Enter product name">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editProductCategory">Category:</label>
+                    <select id="editProductCategory" class="form-select">
+                        <option value="">Select Category</option>
+                        <option value="1">Dog</option>
+                        <option value="2">Cat</option>
+                        <option value="3">Small Pet</option>
+                        <option value="4">Feathered</option>
+                        <option value="5">Aquatic</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editProductSubCategory">Sub-Category:</label>
+                    <select id="editProductSubCategory" class="form-select">
+                        <option value="">Select Sub-Category</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Product Photos (up to 3):</label>
+                <div class="photo-upload-container" id="editProductPhotosContainer">
+                    <div class="photo-upload-box" data-index="0">
+                        <input type="file" accept="image/*">
+                        <i class="fas fa-camera upload-icon"></i>
+                        <span class="upload-text">Add Photo</span>
+                        <img class="photo-preview" alt="Preview">
+                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="photo-upload-box" data-index="1">
+                        <input type="file" accept="image/*">
+                        <i class="fas fa-camera upload-icon"></i>
+                        <span class="upload-text">Add Photo</span>
+                        <img class="photo-preview" alt="Preview">
+                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="photo-upload-box" data-index="2">
+                        <input type="file" accept="image/*">
+                        <i class="fas fa-camera upload-icon"></i>
+                        <span class="upload-text">Add Photo</span>
+                        <img class="photo-preview" alt="Preview">
+                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <label>Product Variations:</label>
+                <div class="variations-container" id="editProductVariationsContainer">
+                    <div class="variations-header">
+                        <h4>Manage Variations (e.g., weight, size)</h4>
+                        <button type="button" class="add-variation-btn" id="addEditProductVariation">
+                            <i class="fas fa-plus"></i>
+                            Add Variation
+                        </button>
+                    </div>
+                    <div id="editProductVariationsList">
+                        <div class="variation-item" data-index="0">
+                            <div class="form-group">
+                                <label>Variation Name (e.g., 15kg, Large):</label>
+                                <input type="text" class="variation-name" placeholder="Enter variation name">
+                            </div>
+                            <div class="form-group">
+                                <label>Stock:</label>
+                                <input type="number" class="variation-stock" placeholder="Enter stock" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Price (₱):</label>
+                                <input type="number" class="variation-price" placeholder="Enter price" min="0" step="0.01">
+                            </div>
+                            <button type="button" class="remove-variation-btn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editProductTotalStock">Total Stock (Auto-calculated):</label>
+                    <input type="number" id="editProductTotalStock" class="form-input" disabled value="0">
+                </div>
+                <div class="form-group">
+                    <label for="editProductBasePrice">Base Price (₱):</label>
+                    <input type="number" id="editProductBasePrice" class="form-input" placeholder="Enter base price" min="0" step="0.01">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cancel">Cancel</button>
+            <button type="button" class="btn-update-product">Update Product</button>
+        </div>
+    </div>
+</div>
 
     <!-- Edit Photos Modal -->
     <div id="editPhotosModal" class="modal">
@@ -707,52 +1068,49 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
         // DOM Elements
         const categoryFilter = document.getElementById('category-filter');
         const subcategoryFilter = document.getElementById('subcategory-filter');
         const productsTableBody = document.getElementById('products-table-body');
         const addProductModal = document.getElementById('addProductModal');
-        const editProductNameModal = document.getElementById('editProductNameModal');
-        const editCategoryModal = document.getElementById('editCategoryModal');
-        const editSubCategoryModal = document.getElementById('editSubCategoryModal');
-        const editPhotosModal = document.getElementById('editPhotosModal');
-        const manageStocksModal = document.getElementById('manageStocksModal');
-        const editProductPriceModal = document.getElementById('editProductPriceModal');
+        const editProductModal = document.getElementById('editProductModal');
         const deleteConfirmationModal = document.getElementById('deleteConfirmationModal');
         const photoViewerModal = document.getElementById('photoViewerModal');
-        const editVariationsModal = document.getElementById('editVariationsModal');
         
         const addProductBtn = document.getElementById('addProductBtn');
         
+        // Add Product Inputs
         const newProductIdInput = document.getElementById('newProductId');
         const newProductNameInput = document.getElementById('newProductName');
         const newProductCategoryInput = document.getElementById('newProductCategory');
         const newProductSubCategoryInput = document.getElementById('newProductSubCategory');
-        const newProductStocksInput = document.getElementById('newProductStocks');
-        const newProductPriceInput = document.getElementById('newProductPrice');
+        const newProductTotalStockInput = document.getElementById('newProductTotalStock');
+        const newProductBasePriceInput = document.getElementById('newProductBasePrice');
         
-        const productNameInput = document.getElementById('productName');
-        const productCategoryInput = document.getElementById('productCategory');
-        const productSubCategoryInput = document.getElementById('productSubCategory');
-        const productStocksInput = document.getElementById('productStocks');
-        const productPriceInput = document.getElementById('productPrice');
+        // Edit Product Inputs
+        const editProductIdInput = document.getElementById('editProductId');
+        const editProductNameInput = document.getElementById('editProductName');
+        const editProductCategoryInput = document.getElementById('editProductCategory');
+        const editProductSubCategoryInput = document.getElementById('editProductSubCategory');
+        const editProductTotalStockInput = document.getElementById('editProductTotalStock');
+        const editProductBasePriceInput = document.getElementById('editProductBasePrice');
+        
         const deleteProductNameSpan = document.getElementById('deleteProductName');
         
         const cancelBtns = document.querySelectorAll('.btn-cancel');
-        const updateBtns = document.querySelectorAll('.btn-update');
-        const deleteBtn = document.querySelector('.btn-delete');
         const addProductSubmitBtn = document.querySelector('.btn-add');
+        const updateProductBtn = document.querySelector('.btn-update-product');
+        const deleteBtn = document.querySelector('.btn-delete');
         const notificationContainer = document.getElementById('notificationContainer');
         
         const photoViewerImage = document.getElementById('photoViewerImage');
         const photoViewerClose = document.querySelector('.photo-viewer-close');
         
+        let currentEditRowIndex = null;
         let currentDeleteRowIndex = null;
         let productIdCounter = 124;
-        let currentEditPhotoRowIndex = null;
-        let currentEditVariationsRowIndex = null;
         let variationCounter = 1;
 
         // Notification System
@@ -774,9 +1132,9 @@
                     <div class="notification-title">${title}</div>
                     <div class="notification-message">${message}</div>
                 </div>
-                 <button class="notification-close">
-                  <i class="fas fa-times"></i>
-                 </button>
+                <button class="notification-close">
+                    <i class="fas fa-times"></i>
+                </button>
             `;
             
             notificationContainer.appendChild(notification);
@@ -930,15 +1288,19 @@
         });
         
         // Variation Management Functions
-        function createVariationItem(index, name = '', price = '') {
+        function createVariationItem(index, name = '', stock = '', price = '') {
             const div = document.createElement('div');
             div.className = 'variation-item';
             div.setAttribute('data-index', index);
             
             div.innerHTML = `
                 <div class="form-group">
-                    <label>Variation Name (e.g., 15kg, Large):</label>
-                    <input type="text" class="variation-name" placeholder="Enter variation name" value="${name}">
+                    <label>Variation Name:</label>
+                    <input type="text" class="variation-name" placeholder="e.g., 15kg, Large" value="${name}">
+                </div>
+                <div class="form-group">
+                    <label>Stock:</label>
+                    <input type="number" class="variation-stock" placeholder="Enter stock" min="0" value="${stock || 0}">
                 </div>
                 <div class="form-group">
                     <label>Price (₱):</label>
@@ -956,12 +1318,39 @@
                 
                 if (items.length > 1) {
                     div.remove();
+                    calculateTotalStock(container);
                 } else {
                     showNotification('warning', 'Warning', 'At least one variation is required');
                 }
             });
             
+            // Add event listeners to recalculate total stock
+            const stockInput = div.querySelector('.variation-stock');
+            stockInput.addEventListener('input', function() {
+                const container = this.closest('.variations-container');
+                calculateTotalStock(container);
+            });
+            
             return div;
+        }
+
+        function calculateTotalStock(container) {
+            const items = container.querySelectorAll('.variation-item');
+            let total = 0;
+            
+            items.forEach(item => {
+                const stock = parseInt(item.querySelector('.variation-stock').value) || 0;
+                total += stock;
+            });
+            
+            // Update the total stock input
+            if (container.id === 'addProductVariations') {
+                newProductTotalStockInput.value = total;
+            } else if (container.id === 'editProductVariations') {
+                editProductTotalStockInput.value = total;
+            }
+            
+            return total;
         }
 
         function getVariationsFromContainer(container) {
@@ -970,11 +1359,13 @@
             
             items.forEach(item => {
                 const name = item.querySelector('.variation-name').value.trim();
+                const stock = item.querySelector('.variation-stock').value.trim();
                 const price = item.querySelector('.variation-price').value.trim();
                 
                 if (name && price) {
                     variations.push({
                         name: name,
+                        stock: parseInt(stock) || 0,
                         price: parseFloat(price)
                     });
                 }
@@ -989,11 +1380,13 @@
             
             if (variations && variations.length > 0) {
                 variations.forEach((variation, index) => {
-                    listElement.appendChild(createVariationItem(index, variation.name, variation.price));
+                    listElement.appendChild(createVariationItem(index, variation.name, variation.stock || 0, variation.price));
                 });
             } else {
                 listElement.appendChild(createVariationItem(0));
             }
+            
+            calculateTotalStock(container);
         }
 
         function createVariationsDisplay(variations) {
@@ -1004,7 +1397,7 @@
                 variations.forEach(variation => {
                     const badge = document.createElement('span');
                     badge.className = 'variation-badge';
-                    badge.innerHTML = `${variation.name}: <span class="variation-price">₱${variation.price.toLocaleString('en-PH', {
+                    badge.innerHTML = `${variation.name}: ${variation.stock || 0} pcs @ <span class="variation-price">₱${variation.price.toLocaleString('en-PH', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
                     })}</span>`;
@@ -1020,6 +1413,7 @@
             return container;
         }
 
+        // Add variation buttons
         document.getElementById('addNewVariation').addEventListener('click', function() {
             const list = document.getElementById('variationsList');
             list.appendChild(createVariationItem(variationCounter++));
@@ -1053,7 +1447,6 @@
             ]
         };
 
-
         const categoryDisplayNames = {
             'dog': 'Dog',
             'cat': 'Cat',
@@ -1068,31 +1461,26 @@
             if (subcategories[categoryId]) {
                 subcategories[categoryId].forEach(sub => {
                     const option = document.createElement('option');
-                    option.value = sub.id;       // ✅ NUMERIC ID
+                    option.value = sub.id;
                     option.textContent = sub.name;
                     newProductSubCategoryInput.appendChild(option);
                 });
             }
         }
 
-        
-        function populateSubcategoryDropdown(category, currentSubCategory = '') {
-            productSubCategoryInput.innerHTML = '';
-            
-            const options = subcategories[category];
-            if (options) {
-                options.forEach(option => {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = option;
-                    optionElement.textContent = option;
-                    if (option === currentSubCategory) {
-                        optionElement.selected = true;
-                    }
-                    productSubCategoryInput.appendChild(optionElement);
+        function populateEditProductSubcategories(categoryId) {
+            editProductSubCategoryInput.innerHTML = '<option value="">Select Sub-Category</option>';
+
+            if (subcategories[categoryId]) {
+                subcategories[categoryId].forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub.id;
+                    option.textContent = sub.name;
+                    editProductSubCategoryInput.appendChild(option);
                 });
             }
         }
-   
+    
         function updateSubcategories(category) {
             subcategoryFilter.innerHTML = '';
             
@@ -1107,12 +1495,20 @@
             defaultOption.selected = true;
             subcategoryFilter.appendChild(defaultOption);
             
-            const options = subcategories[category];
+            const categoryIdMap = {
+                'dog': 1,
+                'cat': 2,
+                'small-pet': 3,
+                'feathered': 4,
+                'aquatic': 5
+            };
+            
+            const options = subcategories[categoryIdMap[category]];
             if (options) {
                 options.forEach(option => {
                     const optionElement = document.createElement('option');
-                    optionElement.value = option;
-                    optionElement.textContent = option;
+                    optionElement.value = option.name;
+                    optionElement.textContent = option.name;
                     subcategoryFilter.appendChild(optionElement);
                 });
                 subcategoryFilter.style.display = 'block';
@@ -1163,7 +1559,12 @@
         newProductCategoryInput.addEventListener('change', function() {
             populateAddProductSubcategories(this.value);
         });
+
+        editProductCategoryInput.addEventListener('change', function() {
+            populateEditProductSubcategories(this.value);
+        });
         
+        // Add Product Button
         addProductBtn.addEventListener('click', function() {
             productIdCounter++;
             newProductIdInput.value = productIdCounter.toString().padStart(4, '0');
@@ -1171,129 +1572,117 @@
             newProductNameInput.value = '';
             newProductCategoryInput.value = '';
             newProductSubCategoryInput.innerHTML = '<option value="">Select Sub-Category</option>';
-            newProductStocksInput.value = '0';
-            newProductPriceInput.value = '';
+            newProductTotalStockInput.value = '0';
+            newProductBasePriceInput.value = '';
             clearPhotosInContainer(document.getElementById('addProductPhotos'));
             setVariationsInContainer(document.getElementById('addProductVariations'), []);
             
             addProductModal.style.display = 'block';
         });
         
+        // Edit Product Button Handler
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.action-dropdown')) {
-                document.querySelectorAll('.action-menu').forEach(menu => {
-                    menu.classList.remove('show');
-                });
-            }
-            
-            if (e.target.closest('.action-btn')) {
-                const actionBtn = e.target.closest('.action-btn');
-                const menu = actionBtn.nextElementSibling;
+            if (e.target.closest('.edit-product-btn')) {
+                const btn = e.target.closest('.edit-product-btn');
+                const row = btn.closest('tr');
+                currentEditRowIndex = Array.from(row.parentNode.children).indexOf(row);
                 
-                document.querySelectorAll('.action-menu').forEach(m => {
-                    if (m !== menu) {
-                        m.classList.remove('show');
+                // Populate edit modal with current data
+                editProductIdInput.value = row.cells[0].textContent.trim();
+                editProductNameInput.value = row.cells[1].textContent.trim();
+                
+                const categoryValue = row.getAttribute('data-category');
+                const categoryMap = {
+                    'dog': '1',
+                    'cat': '2',
+                    'small-pet': '3',
+                    'feathered': '4',
+                    'aquatic': '5'
+                };
+                editProductCategoryInput.value = categoryMap[categoryValue] || '';
+                
+                populateEditProductSubcategories(editProductCategoryInput.value);
+                
+                const subcategoryValue = row.getAttribute('data-subcategory');
+                setTimeout(() => {
+                    const options = editProductSubCategoryInput.options;
+                    for (let i = 0; i < options.length; i++) {
+                        if (options[i].text === subcategoryValue) {
+                            editProductSubCategoryInput.value = options[i].value;
+                            break;
+                        }
                     }
-                });
+                }, 50);
                 
-                const rect = actionBtn.getBoundingClientRect();
-                menu.style.position = 'fixed';
-                menu.style.left = (rect.left - 180) + 'px';
-                menu.style.top = (rect.bottom + 5) + 'px';
+                // Load photos
+                const photos = row.dataset.photos ? JSON.parse(row.dataset.photos) : [];
+                setPhotosInContainer(document.getElementById('editProductPhotos'), photos);
                 
-                menu.classList.toggle('show');
+                // Load variations
+                const variations = row.dataset.variations ? JSON.parse(row.dataset.variations) : [];
+                setVariationsInContainer(document.getElementById('editProductVariations'), variations);
+                
+                // Set base price
+                const priceText = row.cells[7].textContent.replace('₱', '').replace(/,/g, '').trim();
+                editProductBasePriceInput.value = priceText;
+                
+                editProductModal.style.display = 'block';
+            }
+
+            // Delete button handler
+            if (e.target.closest('.delete-product-btn')) {
+                const btn = e.target.closest('.delete-product-btn');
+                const row = btn.closest('tr');
+                currentDeleteRowIndex = Array.from(row.parentNode.children).indexOf(row);
+                
+                const productName = row.cells[1].textContent.trim();
+                deleteProductNameSpan.textContent = productName;
+                
+                deleteConfirmationModal.style.display = 'block';
             }
         });
         
-        function setupActionItems(row) {
-            const actionItems = row.querySelectorAll('.action-item');
-            
-            actionItems.forEach(item => {
-                const action = item.getAttribute('data-action');
-                
-                item.addEventListener('click', function() {
-                    const currentRow = this.closest('tr');
-                    const rowIndex = Array.from(currentRow.parentNode.children).indexOf(currentRow);
-                    
-                    if (action === 'edit-name') {
-                        const currentProductName = currentRow.cells[1].textContent;
-                        productNameInput.value = currentProductName;
-                        productNameInput.dataset.rowIndex = rowIndex;
-                        editProductNameModal.style.display = 'block';
-                    } else if (action === 'edit-category') {
-                        const currentCategory = currentRow.getAttribute('data-category');
-                        productCategoryInput.value = currentCategory;
-                        productCategoryInput.dataset.rowIndex = rowIndex;
-                        editCategoryModal.style.display = 'block';
-                    } else if (action === 'edit-subcategory') {
-                        const currentCategory = currentRow.getAttribute('data-category');
-                        const currentSubCategory = currentRow.getAttribute('data-subcategory');
-                        populateSubcategoryDropdown(currentCategory, currentSubCategory);
-                        productSubCategoryInput.dataset.rowIndex = rowIndex;
-                        editSubCategoryModal.style.display = 'block';
-                    } else if (action === 'edit-photos') {
-                        const photos = currentRow.dataset.photos ? JSON.parse(currentRow.dataset.photos) : [];
-                        setPhotosInContainer(document.getElementById('editProductPhotos'), photos);
-                        currentEditPhotoRowIndex = rowIndex;
-                        editPhotosModal.style.display = 'block';
-                    } else if (action === 'edit-variations') {
-                        const variations = currentRow.dataset.variations ? JSON.parse(currentRow.dataset.variations) : [];
-                        setVariationsInContainer(document.getElementById('editProductVariations'), variations);
-                        currentEditVariationsRowIndex = rowIndex;
-                        editVariationsModal.style.display = 'block';
-                    } else if (action === 'manage-stocks') {
-                        const currentStocks = currentRow.cells[6].textContent;
-                        productStocksInput.value = currentStocks;
-                        productStocksInput.dataset.rowIndex = rowIndex;
-                        manageStocksModal.style.display = 'block';
-                    } else if (action === 'edit-price') {
-                        const currentPrice = currentRow.cells[7].textContent;
-                        const numericPrice = currentPrice.replace('₱', '').replace(/,/g, '');
-                        productPriceInput.value = numericPrice;
-                        productPriceInput.dataset.rowIndex = rowIndex;
-                        editProductPriceModal.style.display = 'block';
-                    } else if (action === 'delete') {
-                        const productName = currentRow.cells[1].textContent;
-                        deleteProductNameSpan.textContent = productName;
-                        currentDeleteRowIndex = rowIndex;
-                        deleteConfirmationModal.style.display = 'block';
-                    }
-                    
-                    this.closest('.action-menu').classList.remove('show');
-                });
-            });
-        }
-        
-        document.querySelectorAll('#products-table-body tr').forEach(row => {
-            setupActionItems(row);
-        });
-        
+        // Cancel buttons
         cancelBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 const modal = this.closest('.modal');
                 modal.style.display = 'none';
                 
-                if (modal.id === 'editPhotosModal') {
-                    currentEditPhotoRowIndex = null;
+                if (modal.id === 'editProductModal') {
+                    currentEditRowIndex = null;
                 } else if (modal.id === 'deleteConfirmationModal') {
                     currentDeleteRowIndex = null;
-                } else if (modal.id === 'editVariationsModal') {
-                    currentEditVariationsRowIndex = null;
                 }
             });
         });
         
+        // Add Product Submit
         addProductSubmitBtn.addEventListener('click', function() {
+            const name = newProductNameInput.value.trim();
+            const categoryId = newProductCategoryInput.value;
+            const subcategoryId = newProductSubCategoryInput.value;
+            const basePrice = newProductBasePriceInput.value.trim();
+            
+            if (!name || !categoryId || !subcategoryId || !basePrice) {
+                showNotification('error', 'Error', 'Please fill in all required fields');
+                return;
+            }
+            
+            const variations = getVariationsFromContainer(document.getElementById('addProductVariations'));
+            if (variations.length === 0) {
+                showNotification('error', 'Error', 'Please add at least one variation');
+                return;
+            }
+            
             const formData = new FormData();
-            formData.append('name', newProductNameInput.value);
-            formData.append('category_id', newProductCategoryInput.value);
-            formData.append('sub_category_id', newProductSubCategoryInput.value);
-            formData.append('stock', newProductStocksInput.value);
+            formData.append('name', name);
+            formData.append('category_id', categoryId);
+            formData.append('sub_category_id', subcategoryId);
+            formData.append('stock', calculateTotalStock(document.getElementById('addProductVariations')));
             formData.append('description', '');
             formData.append('image1', 'no-image.png');
             formData.append('image2', 'no-image.png');
             formData.append('image3', 'no-image.png');
-
 
             fetch('http://localhost/grizzlypaws-backend/admin/api/add_product.php', {
                 method: 'POST',
@@ -1302,244 +1691,196 @@
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'success') {
-                    showNotification('success', 'Success', 'Product added');
+                    showNotification('success', 'Success', 'Product added successfully');
                     addProductModal.style.display = 'none';
-                    loadProducts(); 
+                    loadProducts();
                 } else {
                     showNotification('error', 'Error', data.message);
                 }
-            });
-        });
-
-        
-        updateBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const modal = this.closest('.modal');
-                
-                if (modal.id === 'editPhotosModal') {
-                    if (currentEditPhotoRowIndex !== null) {
-                        const row = productsTableBody.children[currentEditPhotoRowIndex];
-                        const photos = getPhotosFromContainer(document.getElementById('editProductPhotos'));
-                        
-                        row.dataset.photos = JSON.stringify(photos);
-                        const photoCell = row.cells[4];
-                        photoCell.innerHTML = '';
-                        photoCell.appendChild(createPhotoDisplay(photos));
-                        
-                        showNotification('success', 'Success', 'Product photos updated successfully');
-                        currentEditPhotoRowIndex = null;
-                    }
-                } else if (modal.id === 'editVariationsModal') {
-                    if (currentEditVariationsRowIndex !== null) {
-                        const row = productsTableBody.children[currentEditVariationsRowIndex];
-                        const variations = getVariationsFromContainer(document.getElementById('editProductVariations'));
-                        
-                        if (variations.length === 0) {
-                            showNotification('error', 'Error', 'Please add at least one variation');
-                            return;
-                        }
-                        
-                        row.dataset.variations = JSON.stringify(variations);
-                        
-                        const variationsCell = row.cells[5];
-                        variationsCell.innerHTML = '';
-                        variationsCell.appendChild(createVariationsDisplay(variations));
-                        
-                        const firstVariationPrice = variations[0].price;
-                        const formattedPrice = '₱' + firstVariationPrice.toLocaleString('en-PH', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        });
-                        row.cells[7].textContent = formattedPrice;
-                        
-                        showNotification('success', 'Success', 'Product variations updated successfully');
-                        currentEditVariationsRowIndex = null;
-                    }
-                } else {
-                    const rowIndex = this.parentNode.previousElementSibling.querySelector('input, select').dataset.rowIndex;
-                    const row = productsTableBody.children[rowIndex];
-                    
-                    if (modal.id === 'editProductNameModal') {
-                        const newName = productNameInput.value.trim();
-                        if (!newName) {
-                            showNotification('error', 'Error', 'Please enter a product name');
-                            return;
-                        }
-                        row.cells[1].textContent = newName;
-                        showNotification('success', 'Success', 'Product name updated successfully');
-                    } else if (modal.id === 'editCategoryModal') {
-                        const newCategory = productCategoryInput.value;
-                        const currentSubCategory = row.getAttribute('data-subcategory');
-                        const newCategoryDisplayName = categoryDisplayNames[newCategory];
-                        
-                        row.setAttribute('data-category', newCategory);
-                        row.cells[2].textContent = newCategoryDisplayName;
-                        
-                        const subcategoryOptions = subcategories[newCategory];
-                        if (!subcategoryOptions.includes(currentSubCategory)) {
-                            row.setAttribute('data-subcategory', subcategoryOptions[0]);
-                            row.cells[3].textContent = subcategoryOptions[0];
-                        }
-                        
-                        showNotification('success', 'Success', 'Category updated successfully');
-                    } else if (modal.id === 'editSubCategoryModal') {
-                        const newSubCategory = productSubCategoryInput.value;
-                        row.setAttribute('data-subcategory', newSubCategory);
-                        row.cells[3].textContent = newSubCategory;
-                        showNotification('success', 'Success', 'Sub-category updated successfully');
-                    } else if (modal.id === 'manageStocksModal') {
-                        const newStocks = productStocksInput.value.trim();
-                        if (newStocks === '' || isNaN(newStocks) || parseInt(newStocks) < 0) {
-                            showNotification('error', 'Error', 'Please enter a valid stock quantity');
-                            return;
-                        }
-                        row.cells[6].textContent = newStocks;
-                        showNotification('success', 'Success', 'Stock quantity updated successfully');
-                    } else if (modal.id === 'editProductPriceModal') {
-                        const newPrice = productPriceInput.value.trim();
-                        if (newPrice === '' || isNaN(newPrice) || parseFloat(newPrice) < 0) {
-                            showNotification('error', 'Error', 'Please enter a valid price');
-                            return;
-                        }
-                        const formattedPrice = '₱' + parseFloat(newPrice).toLocaleString('en-PH', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        });
-                        row.cells[7].textContent = formattedPrice;
-                        showNotification('success', 'Success', 'Product price updated successfully');
-                    }
-                }
-                
-                modal.style.display = 'none';
+            })
+            .catch(error => {
+                showNotification('error', 'Error', 'Failed to add product');
+                console.error('Error:', error);
             });
         });
         
+        // Update Product Submit
+        updateProductBtn.addEventListener('click', function() {
+            if (currentEditRowIndex === null) return;
+            
+            const name = editProductNameInput.value.trim();
+            const categoryId = editProductCategoryInput.value;
+            const subcategoryId = editProductSubCategoryInput.value;
+            const basePrice = editProductBasePriceInput.value.trim();
+            
+            if (!name || !categoryId || !subcategoryId || !basePrice) {
+                showNotification('error', 'Error', 'Please fill in all required fields');
+                return;
+            }
+            
+            const variations = getVariationsFromContainer(document.getElementById('editProductVariations'));
+            if (variations.length === 0) {
+                showNotification('error', 'Error', 'Please add at least one variation');
+                return;
+            }
+            
+            const row = productsTableBody.children[currentEditRowIndex];
+            
+            // Update name
+            row.cells[1].textContent = name;
+            
+            // Update category
+            const categoryNames = {
+                '1': 'dog',
+                '2': 'cat',
+                '3': 'small-pet',
+                '4': 'feathered',
+                '5': 'aquatic'
+            };
+            const categoryDisplay = {
+                'dog': 'Dog',
+                'cat': 'Cat',
+                'small-pet': 'Small Pet',
+                'feathered': 'Feathered',
+                'aquatic': 'Aquatic'
+            };
+            const categoryName = categoryNames[categoryId];
+            row.setAttribute('data-category', categoryName);
+            row.cells[2].textContent = categoryDisplay[categoryName];
+            
+            // Update subcategory
+            const subcategoryName = editProductSubCategoryInput.options[editProductSubCategoryInput.selectedIndex].text;
+            row.setAttribute('data-subcategory', subcategoryName);
+            row.cells[3].textContent = subcategoryName;
+            
+            // Update photos
+            const photos = getPhotosFromContainer(document.getElementById('editProductPhotos'));
+            row.dataset.photos = JSON.stringify(photos);
+            const photoCell = row.cells[4];
+            photoCell.innerHTML = '';
+            photoCell.appendChild(createPhotoDisplay(photos));
+            
+            // Update variations
+            row.dataset.variations = JSON.stringify(variations);
+            const variationsCell = row.cells[5];
+            variationsCell.innerHTML = '';
+            variationsCell.appendChild(createVariationsDisplay(variations));
+            
+            // Update total stock (sum of all variation stocks)
+            const totalStock = variations.reduce((sum, v) => sum + (v.stock || 0), 0);
+            row.cells[6].textContent = totalStock;
+            
+            // Update price
+            const formattedPrice = '₱' + parseFloat(basePrice).toLocaleString('en-PH', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            row.cells[7].textContent = formattedPrice;
+            
+            showNotification('success', 'Success', 'Product updated successfully');
+            editProductModal.style.display = 'none';
+            currentEditRowIndex = null;
+        });
+        
+        // Delete Product
         deleteBtn.addEventListener('click', function() {
             if (currentDeleteRowIndex !== null) {
                 const row = productsTableBody.children[currentDeleteRowIndex];
+                const productId = row.cells[0].textContent.trim();
                 const productName = row.cells[1].textContent;
                 
-                row.remove();
-                deleteConfirmationModal.style.display = 'none';
-                currentDeleteRowIndex = null;
-                
-                showNotification('success', 'Success', `Product "${productName}" has been deleted`);
+                fetch('http://localhost/grizzlypaws-backend/admin/api/delete_product.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: `id=${productId}`
+                })
+                .then(res => res.text())
+                .then(response => {
+                    if (response === 'success') {
+                        row.remove();
+                        showNotification('success', 'Success', `Product "${productName}" has been deleted`);
+                        deleteConfirmationModal.style.display = 'none';
+                        currentDeleteRowIndex = null;
+                    } else {
+                        showNotification('error', 'Error', 'Failed to delete product');
+                    }
+                })
+                .catch(error => {
+                    showNotification('error', 'Error', 'Failed to delete product');
+                    console.error('Error:', error);
+                });
             }
         });
         
+        // Close modals on outside click
         window.addEventListener('click', function(e) {
             if (e.target.classList.contains('modal')) {
                 e.target.style.display = 'none';
             }
         });
         
+        // Load Products Function
         function loadProducts() {
             fetch('http://localhost/grizzlypaws-backend/admin/api/get_products.php')
                 .then(res => res.json())
                 .then(data => {
                     productsTableBody.innerHTML = '';
 
-                    data.forEach(product => {
+                    data.forEach((product, index) => {
                         const row = document.createElement('tr');
-                        row.setAttribute('data-category', product.category.toLowerCase());
+                        
+                        const categoryMap = {
+                            'Dog': 'dog',
+                            'Cat': 'cat',
+                            'Small Pet': 'small-pet',
+                            'Feathered': 'feathered',
+                            'Aquatic': 'aquatic'
+                        };
+                        
+                        row.setAttribute('data-category', categoryMap[product.category] || product.category.toLowerCase());
                         row.setAttribute('data-subcategory', product.subcategory);
+                        row.dataset.photos = JSON.stringify([]);
+                        row.dataset.variations = JSON.stringify([]);
 
                         row.innerHTML = `
                             <td><strong>${product.id}</strong></td>
                             <td>${product.name}</td>
                             <td>${product.category}</td>
                             <td>${product.subcategory}</td>
-
                             <td>
                                 <div class="product-photos">
-                                    ${product.image1 ? `<img src="${product.image1}" class="product-photo-thumb">` : ''}
-                                    ${product.image2 ? `<img src="${product.image2}" class="product-photo-thumb">` : ''}
-                                    ${product.image3 ? `<img src="${product.image3}" class="product-photo-thumb">` : ''}
+                                    <span class="no-photos-text">No photos</span>
                                 </div>
                             </td>
-
                             <td class="variations-cell">
-                                <span class="no-variations-text">From DB</span>
+                                <span class="no-variations-text">No variations</span>
                             </td>
-
                             <td>${product.stock}</td>
-
-                            <td>₱---</td>
-
+                            <td>₱0.00</td>
                             <td>
-                                <div class="action-dropdown">
-                                    <button class="action-btn"><i class="fas fa-ellipsis-h"></i></button>
-                                    <div class="action-menu">
-                                        <div class="action-item edit-name" data-id="${product.id}">Edit Name</div>
-                                        <div class="action-item manage-stock" data-id="${product.id}">Manage Stocks</div>
-                                        <div class="action-item delete-product" data-id="${product.id}">Delete</div>
-                                    </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="edit-product-btn" data-row-index="${index}">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="delete-product-btn" data-row-index="${index}" style="background: #dc3545;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                             </td>
                         `;
 
                         productsTableBody.appendChild(row);
                     });
-
-                    attachActionListeners();
+                })
+                .catch(error => {
+                    console.error('Error loading products:', error);
+                    showNotification('error', 'Error', 'Failed to load products');
                 });
         }
 
-            loadProducts();
-
-            function attachActionListeners() {
-
-            document.querySelectorAll('.delete-product').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const productId = this.dataset.id;
-
-                    if (!confirm('Delete this product?')) return;
-
-                    fetch('../admin/api/delete_product.php', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                        body: `id=${productId}`
-                    })
-                    .then(res => res.text())
-                    .then(response => {
-                        if (response === 'success') {
-                            showNotification('success', 'Deleted', 'Product removed');
-                            loadProducts();
-                        } else {
-                            alert(response);
-                        }
-                    });
-                });
-            });
-
-            document.querySelectorAll('.manage-stock').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const productId = this.dataset.id;
-                    const newStock = prompt("Enter new stock:");
-
-                    if (newStock === null) return;
-
-                    fetch('../admin/api/update_product.php', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                        body: `id=${productId}&name=&stock=${newStock}`
-                    })
-                    .then(res => res.text())
-                    .then(response => {
-                        if (response === 'success') {
-                            showNotification('success', 'Updated', 'Stock updated');
-                            loadProducts();
-                        } else {
-                            alert(response);
-                        }
-                    });
-                });
-            });
-
-        }
-   
+        // Initialize
+        loadProducts();
     });
-
-</script>
+    </script>
 </body>
 </html>

@@ -46,7 +46,7 @@
         .admin-profile-content {
         padding: 40px;
         display: grid;
-        grid-template-columns: 180px 1fr;
+        /* grid-template-columns: 180px 1fr; */
         gap: 40px;
         align-items: start;
         }

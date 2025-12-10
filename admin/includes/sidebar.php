@@ -64,7 +64,7 @@
                         Manage Reviews
                     </a>
                 </div>
-                <div class="menu-item <?= $current_page == 'concern.php' ? 'active' : '' ?>">
+                <!-- <div class="menu-item <?= $current_page == 'concern.php' ? 'active' : '' ?>">
                     <a href="/grizzlypaws-backend/admin/pages/concern.php" style="display: flex; align-items: center; gap: 15px; text-decoration: none; color: inherit; width: 100%;">
                         <span class="menu-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -75,7 +75,7 @@
                         </span>
                         Concern
                     </a>
-                </div>
+                </div> -->
                 <div class="menu-item <?= $current_page == 'user-management.php' ? 'active' : '' ?>">
                     <a href="/grizzlypaws-backend/admin/pages/user-management.php" style="display: flex; align-items: center; gap: 15px; text-decoration: none; color: inherit; width: 100%;">
                         <span class="menu-icon">

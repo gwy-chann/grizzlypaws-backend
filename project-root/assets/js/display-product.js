@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("first-breadcrumb").innerText = toTitleCase(_category.replace("_", " "))
 
 
-    document.getElementById('sub-category-item').innerHTML = product.sub_category
+    document.getElementById('sub-category-item').innerHTML = product.sub_category + "here!"
 
     const maxLength = 50;
     const productName = product.name;
@@ -32,9 +32,9 @@ document.addEventListener("DOMContentLoaded", async function() {
       ? productName.substring(0, maxLength) + '...' 
       : productName;
 
-    document.getElementById('product-detail-item').innerText = displayText;
+    document.getElementById('product-detail-item').innerText = displayText + "here!";
 
-    document.getElementById('product-detail-item').innerText = displayText;
+    document.getElementById('product-detail-item').innerText = displayText + "here!";
     
     const thumbnails = document.getElementById("thumbnail-container")
     let thumbnail_display  = ''
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     product_title.innerHTML = product.name
 
     const product_description = document.getElementById("product_description")
-    product_description.innerHTML = product?.description || 'No description available.'
+    product_description.innerHTML = product?.description || "No description available";
 
     const custom_select = document.getElementById("custom_select")
 
@@ -80,8 +80,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     // for price of product
     const select = document.querySelector('.custom-select');
 
-    console.log(product);
-    updatePrice(select.value, product);
 
     select.addEventListener('change', function () {
       updatePrice(this.value, product);
@@ -103,14 +101,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         name: product.name,
         quantity: parseInt(quantityInput.value) || 1,
         unit: value,
-      }, true, 
-     {
-      variation_id: product.variations.find(variation => variation.unit === value).id,
-      quantity: parseInt(quantityInput.value),
-      final_price: product.variations.find(variation => variation.unit === value).price * (parseInt(quantityInput.value) || 1),
-      unit: product.variations.find(variation => variation.unit === value).unit
-     }
-    );
+      });
       showSuccessModal(productId);
     });
     
@@ -127,16 +118,15 @@ function updatePrice(selectedValue, product) {
   if (selectedVariation) {
     price = selectedVariation.price;
   }
-
-  // console.log(selectedValue, product);
   const priceDiv = document.querySelector('.price');
   const originalPriceDiv = document.querySelector('.original-price');
 
   priceDiv.textContent = `₱ ${price.toLocaleString()}`;
   const originalPrice = price + 1000;
   originalPriceDiv.textContent = `₱ ${originalPrice.toLocaleString()}`;
-}
 
+  document.querySelector('.quantity-input').value = 1;
+}
 
 })
 

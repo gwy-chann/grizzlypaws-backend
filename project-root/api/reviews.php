@@ -41,7 +41,7 @@ switch ($method) {
                 SELECT r.*, c.first_name, c.last_name 
                 FROM reviews r
                 LEFT JOIN customers c ON r.user_id = c.customer_id
-                WHERE r.product_id = :product_id
+                WHERE r.product_id = :product_id AND (r.is_hidden = 0 OR r.is_hidden IS NULL)
                 ORDER BY r.created_at DESC
             ");
             $stmt->execute(['product_id' => $product_id]);
