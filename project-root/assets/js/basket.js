@@ -8,7 +8,9 @@ async function renderCartItems() {
   itemTable.innerHTML = ""; // Clear existing items
 
   const response = await fetch(
-    `http://localhost/grizzlypaws-backend/project-root/api/cart.php?customer-id=${sessionStorage.getItem("user_id")}`
+    `http://localhost/grizzlypaws-backend/project-root/api/cart.php?customer-id=${sessionStorage.getItem(
+      "user_id"
+    )}`
   );
   let data = await response.json();
   const cart = data.items || [];
@@ -52,7 +54,9 @@ async function renderCartItems() {
 
     row.innerHTML = `
         <td>
-          <input type="checkbox" class="checkbox item-checkbox" data-id=${item.id} data-index="${index}" />
+          <input type="checkbox" class="checkbox item-checkbox" data-id=${
+            item.id
+          } data-index="${index}" />
         </td>
         <td>
           <div class="product-info">
@@ -104,8 +108,6 @@ async function renderCartItems() {
     const plusBtn = row.querySelector(".plus-btn");
     const deleteBtn = row.querySelector(".delete-icon");
 
-    console.log(item);
-
     const ids = {
       product_id: item.product_id,
       variation_id: item.variation_id,
@@ -125,7 +127,9 @@ async function renderCartItems() {
 // Function to update order summary based on selected items only
 async function updateOrderSummary() {
   const response = await fetch(
-    `http://localhost/grizzlypaws-backend/project-root/api/cart.php?customer-id=${sessionStorage.getItem("user_id")}`
+    `http://localhost/grizzlypaws-backend/project-root/api/cart.php?customer-id=${sessionStorage.getItem(
+      "user_id"
+    )}`
   );
   let data = await response.json();
   const cart_items = data.items || [];
@@ -367,20 +371,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Checkout button click handler
   checkoutBtn.addEventListener("click", async function () {
-    // const response = await fetch(
-    //   `http://localhost/grizzlypaws-backend/project-root/api/cart.php?customer-id=${sessionStorage.getItem("user_id")}`
-    // );
-    // let data = await response.json();
-    // const cart_items = data.items || [];
+    const response = await fetch(
+      `http://localhost/grizzlypaws-backend/project-root/api/cart.php?customer-id=${sessionStorage.getItem(
+        "user_id"
+      )}`
+    );
+    let data = await response.json();
+    const cart_items = data.items || [];
 
-    // if (cart_items.length === 0) {
-    //   alert(
-    //     "Your the basket is empty. Please add items to your basket before proceeding to checkout."
-    //   );
-    //   return;
-    // }
-
-    console.log(generateRandomId());
+    if (cart_items.length === 0) {
+      alert(
+        "Your the basket is empty. Please add items to your basket before proceeding to checkout."
+      );
+      return;
+    }
 
     // Check if at least one item is selected
     const checkedItems = document.querySelectorAll(".item-checkbox:checked");
@@ -407,6 +411,83 @@ document.addEventListener("DOMContentLoaded", function () {
     // Disable body scroll
     document.body.classList.add("modal-open");
   });
+
+  // Function to build transaction data from selected items
+  async function buildTransactionData(selectedPayment) {
+    const response = await fetch(
+      `http://localhost/grizzlypaws-backend/project-root/api/cart.php?customer-id=${sessionStorage.getItem(
+        "user_id"
+      )}`
+    );
+    const data = await response.json();
+    const cart_items = data.items || [];
+    const checkedItems = document.querySelectorAll(".item-checkbox:checked");
+
+    let subtotal = 0;
+    const orderItems = [];
+
+    checkedItems.forEach((checkbox) => {
+      const index = parseInt(checkbox.dataset.index);
+      if (index >= 0 && index < cart_items.length) {
+        const item = cart_items[index];
+        const itemTotal = item.price * item.quantity;
+
+        console.log("cart_items", cart_items, item);
+        subtotal += itemTotal;
+
+        orderItems.push({
+          product_id: item.product_id,
+          variation_id: item.variation_id,
+          quantity: item.quantity,
+          price: item.price,
+        });
+      }
+    });
+
+    console.log(subtotal);
+
+    const vat = subtotal * 0.12;
+    const totalAmount = subtotal + vat;
+
+    return {
+      customer_id: parseInt(sessionStorage.getItem("user_id")),
+      total_amount: totalAmount,
+      payment_method: selectedPayment.value,
+      payment_status: "paid",
+      order_status: "checkout",
+      items: orderItems,
+    };
+  }
+
+  // Function to submit transaction to API
+  async function submitTransaction(transactionData) {
+    try {
+      const response = await fetch(
+        "http://localhost/grizzlypaws-backend/project-root/api/transaction.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(transactionData),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log("Transaction created:", result.data);
+        return result.data;
+      } else {
+        alert("Failed to create transaction: " + result.message);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error submitting transaction:", error);
+      alert("Error submitting transaction. Please try again.");
+      return null;
+    }
+  }
 
   // Proceed Payment Button Handler
   proceedPaymentBtn.addEventListener("click", async function () {
@@ -466,37 +547,44 @@ document.addEventListener("DOMContentLoaded", function () {
       cart_ids.push(cart_item_id);
     });
 
-
     const requestParams = new URLSearchParams({
       "item-ids": cart_ids.join(","),
       "customer-id": sessionStorage.getItem("user_id"), // Replace with actual customer ID
     });
 
-      try {
-      const response = await fetch(
-        `http://localhost/grizzlypaws-backend/project-root/api/cart.php?${requestParams}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
+    try {
+      const transactionData = await buildTransactionData(selectedPayment);
+      const transactionResult = await submitTransaction(transactionData);
+
+      if (transactionResult) {
+        // Show success modal
+        successModal.style.display = "block";
+        document.getElementById("modal-product-info").textContent =
+          "Your order has been placed successfully. You can track your order in your email.";
+
+        const response = await fetch(
+          `http://localhost/grizzlypaws-backend/project-root/api/cart.php?${requestParams}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        if (data.status === "success") {
+          await renderCartItems();
+          window.updateOrderSummary();
+        } else {
+          alert("Failed to remove item: " + data.message);
         }
-      );
-
-      const data = await response.json();
-
-      if (data.status === "success") {
-        await renderCartItems();
-        window.updateOrderSummary();
-      } else {
-        alert("Failed to remove item: " + data.message);
       }
     } catch (error) {
       console.error("Error removing item:", error);
       alert("Error removing item. Please try again.");
     }
-
-    renderCartItems();
   });
 
   // Close payment modal
@@ -564,10 +652,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
 function generateRandomId() {
-  const prefix = 'PET';
+  const prefix = "PET";
   const randomNumber = Math.floor(Math.random() * 100000000);
-  const paddedNumber = String(randomNumber).padStart(8, '0');
+  const paddedNumber = String(randomNumber).padStart(8, "0");
   return prefix + paddedNumber;
 }
