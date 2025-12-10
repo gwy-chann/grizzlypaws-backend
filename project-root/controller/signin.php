@@ -62,6 +62,11 @@ try {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Check account status
+    if ($user['status'] === 'suspended') {
+        echo json_encode(["status" => "error", "message" => "Your account has been suspended. Please contact support."]);
+        exit;
+    }
+    
     if ($user['status'] !== 'active') {
         echo json_encode(["status" => "error", "message" => "Account is not active"]);
         exit;

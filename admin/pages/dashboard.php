@@ -212,7 +212,7 @@
                 
                 <div class="card">
                     <div class="card-content">
-                        <div class="card-metric">2</div>
+                        <div class="card-metric">...</div>
                         <div class="circular-progress-container">
                             <div class="circular-progress"></div>
                             <i class="fas fa-file-alt card-icon"></i> 
@@ -223,7 +223,7 @@
 
                 <div class="card">
                     <div class="card-content">
-                        <div class="card-metric">Php 2,898.00</div>
+                        <div class="card-metric">...</div>
                         <div class="circular-progress-container">
                             <div class="circular-progress"></div>
                             <i class="fas fa-chart-bar card-icon"></i>
@@ -234,7 +234,7 @@
 
                 <div class="card">
                     <div class="card-content">
-                        <div class="card-metric">2</div>
+                        <div class="card-metric">...</div>
                         <div class="circular-progress-container">
                             <div class="circular-progress"></div>
                             <i class="fas fa-box-open card-icon"></i>
@@ -274,47 +274,11 @@
             <h3>Action Items</h3>
         </div>
         <div class="actions-list">
-            <div class="action-item pending">
-                <div class="action-checkbox">
-                    <i class="fas fa-circle"></i>
-                </div>
+            <!-- Action items will be dynamically loaded -->
+            <div class="action-item" style="text-align: center; padding: 30px; border: none; background: transparent;">
                 <div class="action-details">
-                    <h4>Restock Low Inventory Items</h4>
-                    <p>2 products currently below minimum stock threshold</p>
-                    <span class="action-priority high">High Priority</span>
-                </div>
-            </div>
-            
-            <div class="action-item pending">
-                <div class="action-checkbox">
-                    <i class="fas fa-circle"></i>
-                </div>
-                <div class="action-details">
-                    <h4>Process New Orders</h4>
-                    <p>2 orders received today awaiting confirmation</p>
-                    <span class="action-priority high">High Priority</span>
-                </div>
-            </div>
-            
-            <div class="action-item pending">
-                <div class="action-checkbox">
-                    <i class="fas fa-circle"></i>
-                </div>
-                <div class="action-details">
-                    <h4>Review Customer Feedback</h4>
-                    <p>Check and respond to recent product reviews</p>
-                    <span class="action-priority medium">Medium Priority</span>
-                </div>
-            </div>
-            
-            <div class="action-item pending">
-                <div class="action-checkbox">
-                    <i class="fas fa-circle"></i>
-                </div>
-                <div class="action-details">
-                    <h4>Update Product Descriptions</h4>
-                    <p>Enhance SEO and clarity for better conversions</p>
-                    <span class="action-priority low">Low Priority</span>
+                    <div class="loading-spinner" style="margin: 0 auto 10px;"></div>
+                    <p style="color: #999;">Loading action items...</p>
                 </div>
             </div>
         </div>
@@ -326,5 +290,8 @@
             </div>
         </div>
     </div>
+    
+    <!-- Dashboard JavaScript -->
+    <script src="../assets/js/dashboard.js"></script>
 </body>
 </html>

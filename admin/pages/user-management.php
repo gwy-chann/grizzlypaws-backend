@@ -566,17 +566,7 @@
         }, 300);
     }
     
-    // Sample data
-    let users = [
-        { id: 'C001', name: 'John Doe', email: 'john.doe@email.com', phone: '+63 912 345 6789', registrationDate: '2024-01-15', totalOrders: 12, status: 'active' },
-        { id: 'C002', name: 'Jane Smith', email: 'jane.smith@email.com', phone: '+63 923 456 7890', registrationDate: '2024-02-20', totalOrders: 8, status: 'active' },
-        { id: 'C003', name: 'Robert Johnson', email: 'robert.j@email.com', phone: '+63 934 567 8901', registrationDate: '2024-03-10', totalOrders: 5, status: 'inactive' },
-        { id: 'C004', name: 'Maria Garcia', email: 'maria.garcia@email.com', phone: '+63 945 678 9012', registrationDate: '2024-01-05', totalOrders: 15, status: 'active' },
-        { id: 'C005', name: 'Michael Brown', email: 'michael.b@email.com', phone: '+63 956 789 0123', registrationDate: '2024-04-12', totalOrders: 3, status: 'suspended' },
-        { id: 'C006', name: 'Sarah Wilson', email: 'sarah.wilson@email.com', phone: '+63 967 890 1234', registrationDate: '2024-02-28', totalOrders: 10, status: 'active' },
-        { id: 'C007', name: 'David Lee', email: 'david.lee@email.com', phone: '+63 978 901 2345', registrationDate: '2024-03-15', totalOrders: 0, status: 'inactive' },
-        { id: 'C008', name: 'Emma Martinez', email: 'emma.m@email.com', phone: '+63 989 012 3456', registrationDate: '2024-01-20', totalOrders: 18, status: 'active' }
-    ];
+    let users = [];
 
     let filteredUsers = [...users];
     let currentPage = 1;
@@ -585,13 +575,40 @@
 
     // Initialize
     document.addEventListener('DOMContentLoaded', function() {
-        updateStatistics(); 
-        renderTable();
+        fetchUsers();
         
         document.getElementById('searchInput').addEventListener('input', filterUsers);
         document.getElementById('statusFilter').addEventListener('change', filterUsers);
         document.getElementById('sortFilter').addEventListener('change', filterUsers);
     });
+
+    async function fetchUsers() {
+        try {
+            const response = await fetch('../api/get_users.php');
+            const data = await response.json();
+            users = data.map(user => ({
+                id: user.customer_id,
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                registrationDate: user.registrationDate,
+                totalOrders: user.totalOrders,
+                status: user.status,
+                // Store full details for view
+                first_name: user.first_name,
+                middle_name: user.middle_name,
+                last_name: user.last_name,
+                mobile_number: user.mobile_number,
+                address: user.address
+            }));
+            filteredUsers = [...users];
+            updateStatistics(); 
+            renderTable();
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            showNotification('error', 'Error', 'Failed to load users');
+        }
+    }
 
     function filterUsers() {
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
@@ -716,13 +733,26 @@
     }
 
     function viewUser(userId) {
-        const user = users.find(u => u.id === userId);
-        alert(`Customer Details:\n\nID: ${user.id}\nName: ${user.name}\nEmail: ${user.email}\nPhone: ${user.phone}\nRegistration: ${formatDate(user.registrationDate)}\nTotal Orders: ${user.totalOrders}\nStatus: ${user.status.toUpperCase()}`);
+        const user = users.find(u => u.id == userId);
+        if (!user) return;
+        
+        const middle = user.middle_name ? user.middle_name + ' ' : '';
+        const fullName = `${user.first_name} ${middle}${user.last_name}`;
+        
+        alert(`Customer Details:
+----------------
+First Name: ${user.first_name}
+Middle Name: ${user.middle_name || 'N/A'}
+Last Name: ${user.last_name}
+Email: ${user.email}
+Mobile Number: ${user.mobile_number}
+Address: ${user.address || 'N/A'}
+Status: ${user.status.toUpperCase()}`);
     }
 
     function openStatusModal(userId) {
         currentEditingUserId = userId;
-        const user = users.find(u => u.id === userId);
+        const user = users.find(u => u.id == userId);
         document.getElementById('modalCustomerName').value = user.name;
         document.getElementById('modalStatus').value = user.status;
         document.getElementById('statusModal').style.display = 'block';
@@ -733,16 +763,38 @@
         currentEditingUserId = null;
     }
 
-    function saveStatus() {
+    async function saveStatus() {
         const newStatus = document.getElementById('modalStatus').value;
-        const user = users.find(u => u.id === currentEditingUserId);
+        const user = users.find(u => u.id == currentEditingUserId);
         
         if (user) {
-            user.status = newStatus;
-            updateStatistics();
-            filterUsers();
-            closeModal();
-            showNotification('success', 'Status Updated', `User "${user.name}" status has been updated to ${newStatus}.`);
+            try {
+                const response = await fetch('../api/update_user_status.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        customer_id: currentEditingUserId,
+                        status: newStatus
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    user.status = newStatus;
+                    updateStatistics();
+                    filterUsers();
+                    closeModal();
+                    showNotification('success', 'Status Updated', `User "${user.name}" status has been updated to ${newStatus}.`);
+                } else {
+                    showNotification('error', 'Update Failed', result.message);
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+                showNotification('error', 'System Error', 'Failed to update status');
+            }
         }
     }
 

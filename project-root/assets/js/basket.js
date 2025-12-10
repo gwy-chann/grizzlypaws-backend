@@ -453,8 +453,8 @@ document.addEventListener("DOMContentLoaded", function () {
       customer_id: parseInt(sessionStorage.getItem("user_id")),
       total_amount: totalAmount,
       payment_method: selectedPayment.value,
-      payment_status: "paid",
-      order_status: "checkout",
+      payment_status: "pending",
+      order_status: "preparing",
       items: orderItems,
     };
   }

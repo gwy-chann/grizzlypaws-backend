@@ -273,6 +273,32 @@ if ($method === 'POST') {
             $payment_status = isset($input['payment_status']) ? $input['payment_status'] : 'pending';
             $order_status = isset($input['order_status']) ? $input['order_status'] : 'cart';
             
+            // Check stock availability for all items first
+            foreach ($input['items'] as $item) {
+                if (!isset($item['product_id']) || !isset($item['quantity']) || !isset($item['price'])) {
+                    throw new Exception('Each item must have product_id, quantity, and price.');
+                }
+                
+                $variation_id = isset($item['variation_id']) ? $item['variation_id'] : null;
+                
+                if ($variation_id) {
+                    // Check stock in product_variations
+                    $stmt = $conn->prepare("SELECT stock FROM product_variations WHERE id = ?");
+                    $stmt->bind_param("i", $variation_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $stock_data = $result->fetch_assoc();
+                    
+                    if (!$stock_data) {
+                        throw new Exception("Product variation ID {$variation_id} not found.");
+                    }
+                    
+                    if ($stock_data['stock'] < $item['quantity']) {
+                        throw new Exception("Insufficient stock for product variation ID {$variation_id}. Available: {$stock_data['stock']}, Requested: {$item['quantity']}");
+                    }
+                }
+            }
+            
             // Insert transaction
             $stmt = $conn->prepare("INSERT INTO transactions (customer_id, order_number, total_amount, payment_method, payment_status, order_status) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param(
@@ -287,15 +313,12 @@ if ($method === 'POST') {
             $stmt->execute();
             $new_transaction_id = $conn->insert_id;
             
-            // Insert transaction items
+            // Insert transaction items and deduct stock
             foreach ($input['items'] as $item) {
-                if (!isset($item['product_id']) || !isset($item['quantity']) || !isset($item['price'])) {
-                    throw new Exception('Each item must have product_id, quantity, and price.');
-                }
-                
                 $variation_id = isset($item['variation_id']) ? $item['variation_id'] : null;
                 $subtotal = $item['quantity'] * $item['price'];
                 
+                // Insert transaction item
                 $stmt = $conn->prepare("INSERT INTO transaction_items (transaction_id, product_id, variation_id, quantity, price, subtotal) VALUES (?, ?, ?, ?, ?, ?)");
                 $stmt->bind_param(
                     "iiiidd",
@@ -307,6 +330,17 @@ if ($method === 'POST') {
                     $subtotal
                 );
                 $stmt->execute();
+                
+                // Deduct stock from product_variations when order status is not 'cart'
+                if ($order_status !== 'cart' && $variation_id) {
+                    $stmt = $conn->prepare("UPDATE product_variations SET stock = stock - ? WHERE id = ?");
+                    $stmt->bind_param("ii", $item['quantity'], $variation_id);
+                    $stmt->execute();
+                    
+                    if ($stmt->affected_rows === 0) {
+                        throw new Exception("Failed to update stock for variation ID {$variation_id}");
+                    }
+                }
             }
             
             $conn->commit();

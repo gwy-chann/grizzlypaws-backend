@@ -9,11 +9,16 @@ $product_id = $_GET['product-id'] ?? null;
 $sql = "
     SELECT 
         p.id,
+        p.category_id,
+        p.sub_category_id,
         p.name,
+        p.description,
         p.stock,
         p.image1,
         p.image2,
         p.image3,
+        p.status,
+        p.created_at,
         c.name AS category,
         s.name AS subcategory
     FROM product p
@@ -63,10 +68,13 @@ while ($row = $result->fetch_assoc()) {
     $varSql = "
         SELECT 
             id,
+            product_id,
             unit,
-            price
+            price,
+            stock
         FROM product_variations
         WHERE product_id = ?
+        ORDER BY id ASC
     ";
 
     $varStmt = $conn->prepare($varSql);

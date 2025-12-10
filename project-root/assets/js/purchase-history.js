@@ -325,12 +325,12 @@ const PurchaseHistory = {
     const statusMap = {
       'delivered': 'status-delivered',
       'shipped': 'status-shipped',
-      'processing': 'status-processing',
+      'preparing': 'status-processing',
+      'pending': 'status-processing',
       'cancelled': 'status-canceled',
       'cart': 'status-processing',
       'checkout': 'status-processing',
       'paid': 'status-delivered',
-      'pending': 'status-processing',
       'failed': 'status-canceled'
     };
     return statusMap[status?.toLowerCase()] || 'status-processing';

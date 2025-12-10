@@ -69,79 +69,56 @@ function showLoginRequired() {
 }
 
 function loadUserProfile(email) {
-    // First, try to get user data from server (database)
-    fetch('../config/get-user.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email })
-    })
+    // Get user_id from sessionStorage
+    const userId = sessionStorage.getItem('user_id');
+    
+    if (!userId) {
+        console.error('No user_id found in session');
+        showLoginRequired();
+        return;
+    }
+
+    // Fetch user profile from database
+    fetch(`../api/customer_profile.php?customer_id=${userId}`)
     .then(res => res.json())
     .then(data => {
-        if (data.status === 'success' && data.user) {
+        if (data.success && data.data) {
             // User found in database
-            currentUser = data.user;
+            currentUser = data.data;
             displayUserData();
             loginRequiredContainer.style.display = 'none';
             profileContainer.style.display = 'block';
         } else {
-            // Fallback: try localStorage for local users
-            const users = JSON.parse(localStorage.getItem('users') || '{}');
-            currentUser = users[email];
-            
-            if (!currentUser) {
-                // User data not found anywhere
-                sessionStorage.removeItem('loggedInUser');
-                showLoginRequired();
-                return;
-            }
-            
-            displayUserData();
-            loginRequiredContainer.style.display = 'none';
-            profileContainer.style.display = 'block';
+            console.error('Failed to load profile:', data.message);
+            sessionStorage.removeItem('loggedInUser');
+            sessionStorage.removeItem('user_id');
+            showLoginRequired();
         }
     })
     .catch(err => {
         console.error('Error fetching user profile:', err);
-        // Fallback to localStorage
-        const users = JSON.parse(localStorage.getItem('users') || '{}');
-        currentUser = users[email];
-        
-        if (!currentUser) {
-            sessionStorage.removeItem('loggedInUser');
-            showLoginRequired();
-            return;
-        }
-        
-        displayUserData();
-        loginRequiredContainer.style.display = 'none';
-        profileContainer.style.display = 'block';
+        showLoginRequired();
     });
 }
 
 function displayUserData() {
     if (!currentUser) return;
     
-    // Load profile photo
-    if (currentUser.profilePhoto) {
-        profilePhoto.src = currentUser.profilePhoto;
-    } else {
-        profilePhoto.src = DEFAULT_PHOTO;
-    }
+    // Load profile photo (default for now)
+    profilePhoto.src = DEFAULT_PHOTO;
     
     // Load personal information
-    firstNameInput.value = currentUser.firstname || '';
-    middleNameInput.value = currentUser.middlename || '';
-    lastNameInput.value = currentUser.lastname || '';
+    firstNameInput.value = currentUser.first_name || '';
+    middleNameInput.value = currentUser.middle_name || '';
+    lastNameInput.value = currentUser.last_name || '';
     
-    // Load bio
-    bioInput.value = currentUser.bio || '';
-    if (!currentUser.bio) {
-        bioInput.placeholder = 'Add bio';
-    }
+    // Load bio (not in customers table, so leave empty)
+    bioInput.value = '';
+    bioInput.placeholder = 'Add bio';
     
     // Load contact information
     emailInput.value = currentUser.email || '';
-    mobileInput.value = currentUser.mobile || '';
+    mobileInput.value = currentUser.mobile_number || '';
     
     // Load address
     addressInput.value = currentUser.address || '';
@@ -237,16 +214,24 @@ function disableEditMode() {
 // SAVE PROFILE
 // ============================
 
-profileForm.addEventListener('submit', (e) => {
+profileForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    if (!isEditMode) return;
+    console.log('Form submitted!');
+    console.log('isEditMode:', isEditMode);
+    
+    if (!isEditMode) {
+        console.log('Not in edit mode, returning');
+        return;
+    }
     
     // Validate inputs
     const firstname = firstNameInput.value.trim();
     const lastname = lastNameInput.value.trim();
     const mobile = mobileInput.value.trim();
     const address = addressInput.value.trim();
+    
+    console.log('Form values:', { firstname, lastname, mobile, address });
     
     if (!firstname) {
         alert('First name is required.');
@@ -272,27 +257,74 @@ profileForm.addEventListener('submit', (e) => {
         return;
     }
     
-    // Update current user data
-    currentUser.firstname = firstname;
-    currentUser.middlename = middleNameInput.value.trim();
-    currentUser.lastname = lastname;
-    currentUser.bio = bioInput.value.trim();
-    currentUser.mobile = mobile;
-    currentUser.address = address;
+    // Get customer ID from sessionStorage
+    const userId = sessionStorage.getItem('user_id');
     
-    // Save to localStorage
-    saveUserToStorage();
+    console.log('user_id from session:', userId);
     
-    // Disable edit mode
-    disableEditMode();
+    if (!userId) {
+        alert('Session expired. Please log in again.');
+        window.location.href = 'login.php';
+        return;
+    }
     
-    showSuccessMessage('Profile updated successfully!');
+    // Prepare update data
+    const updateData = {
+        customer_id: parseInt(userId),
+        first_name: firstname,
+        middle_name: middleNameInput.value.trim(),
+        last_name: lastname,
+        email: emailInput.value.trim(),
+        mobile_number: mobile,
+        address: address
+    };
+    
+    console.log('Sending update data:', updateData);
+    
+    try {
+        // Send update to server
+        const response = await fetch('../api/customer_profile.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updateData)
+        });
+        
+        console.log('Response status:', response.status);
+        
+        const data = await response.json();
+        
+        console.log('Response data:', data);
+        
+        if (data.success) {
+            // Update currentUser with new data
+            currentUser.first_name = firstname;
+            currentUser.middle_name = middleNameInput.value.trim();
+            currentUser.last_name = lastname;
+            currentUser.email = emailInput.value.trim();
+            currentUser.mobile_number = mobile;
+            currentUser.address = address;
+            
+            // Disable edit mode
+            disableEditMode();
+            
+            showSuccessMessage('Profile updated successfully!');
+            
+            console.log('Profile update successful!');
+        } else {
+            console.error('Update failed:', data.message);
+            alert('Failed to update profile: ' + (data.message || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        alert('An error occurred while updating the profile.');
+    }
 });
 
 function saveUserToStorage() {
-    const users = JSON.parse(localStorage.getItem('users') || '{}');
-    users[currentUser.email] = currentUser;
-    localStorage.setItem('users', JSON.stringify(users));
+    // This function is no longer needed since we're saving to database
+    // But keeping it for backward compatibility
 }
 
 // ============================

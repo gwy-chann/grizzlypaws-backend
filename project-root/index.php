@@ -249,7 +249,7 @@ session_start();
 
       <!-- top reccos -->
       <section
-        class="recommendations-section"
+        class="/grizzlypaws-backend/project-root/assets/images/product-images/"
         aria-labelledby="recommendations-heading"
       >
         <h2 id="recommendations-heading" class="sub-section">

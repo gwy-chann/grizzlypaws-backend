@@ -460,29 +460,11 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>Product Photos (up to 3):</label>
-                <div class="photo-upload-container" id="addProductPhotos">
-                    <div class="photo-upload-box" data-index="0">
-                        <input type="file" accept="image/*">
-                        <i class="fas fa-camera upload-icon"></i>
-                        <span class="upload-text">Add Photo</span>
-                        <img class="photo-preview" alt="Preview">
-                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
-                    </div>
-                    <div class="photo-upload-box" data-index="1">
-                        <input type="file" accept="image/*">
-                        <i class="fas fa-camera upload-icon"></i>
-                        <span class="upload-text">Add Photo</span>
-                        <img class="photo-preview" alt="Preview">
-                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
-                    </div>
-                    <div class="photo-upload-box" data-index="2">
-                        <input type="file" accept="image/*">
-                        <i class="fas fa-camera upload-icon"></i>
-                        <span class="upload-text">Add Photo</span>
-                        <img class="photo-preview" alt="Preview">
-                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
-                    </div>
+                <label>Product Image URLs:</label>
+                <div id="addProductPhotos">
+                    <input type="text" class="form-input photo-url-input" placeholder="Image URL 1" style="margin-bottom: 10px;">
+                    <input type="text" class="form-input photo-url-input" placeholder="Image URL 2" style="margin-bottom: 10px;">
+                    <input type="text" class="form-input photo-url-input" placeholder="Image URL 3">
                 </div>
             </div>
             <div class="form-group">
@@ -520,10 +502,6 @@
                 <div class="form-group">
                     <label for="newProductTotalStock">Total Stock (Auto-calculated):</label>
                     <input type="number" id="newProductTotalStock" class="form-input" disabled value="0">
-                </div>
-                <div class="form-group">
-                    <label for="newProductBasePrice">Base Price (₱):</label>
-                    <input type="number" id="newProductBasePrice" class="form-input" placeholder="Enter base price" min="0" step="0.01">
                 </div>
             </div>
         </div>
@@ -571,29 +549,11 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>Product Photos (up to 3):</label>
-                <div class="photo-upload-container" id="editProductPhotos">
-                    <div class="photo-upload-box" data-index="0">
-                        <input type="file" accept="image/*">
-                        <i class="fas fa-camera upload-icon"></i>
-                        <span class="upload-text">Add Photo</span>
-                        <img class="photo-preview" alt="Preview">
-                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
-                    </div>
-                    <div class="photo-upload-box" data-index="1">
-                        <input type="file" accept="image/*">
-                        <i class="fas fa-camera upload-icon"></i>
-                        <span class="upload-text">Add Photo</span>
-                        <img class="photo-preview" alt="Preview">
-                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
-                    </div>
-                    <div class="photo-upload-box" data-index="2">
-                        <input type="file" accept="image/*">
-                        <i class="fas fa-camera upload-icon"></i>
-                        <span class="upload-text">Add Photo</span>
-                        <img class="photo-preview" alt="Preview">
-                        <button type="button" class="remove-photo-btn"><i class="fas fa-times"></i></button>
-                    </div>
+                <label>Product Image URLs:</label>
+                <div id="editProductPhotos">
+                    <input type="text" class="form-input photo-url-input" placeholder="Image URL 1" style="margin-bottom: 10px;">
+                    <input type="text" class="form-input photo-url-input" placeholder="Image URL 2" style="margin-bottom: 10px;">
+                    <input type="text" class="form-input photo-url-input" placeholder="Image URL 3">
                 </div>
             </div>
             <div class="form-group">
@@ -861,10 +821,7 @@
                     <label for="editProductTotalStock">Total Stock (Auto-calculated):</label>
                     <input type="number" id="editProductTotalStock" class="form-input" disabled value="0">
                 </div>
-                <div class="form-group">
-                    <label for="editProductBasePrice">Base Price (₱):</label>
-                    <input type="number" id="editProductBasePrice" class="form-input" placeholder="Enter base price" min="0" step="0.01">
-                </div>
+                
             </div>
         </div>
         <div class="modal-footer">
@@ -1087,7 +1044,7 @@
         const newProductCategoryInput = document.getElementById('newProductCategory');
         const newProductSubCategoryInput = document.getElementById('newProductSubCategory');
         const newProductTotalStockInput = document.getElementById('newProductTotalStock');
-        const newProductBasePriceInput = document.getElementById('newProductBasePrice');
+        
         
         // Edit Product Inputs
         const editProductIdInput = document.getElementById('editProductId');
@@ -1095,7 +1052,7 @@
         const editProductCategoryInput = document.getElementById('editProductCategory');
         const editProductSubCategoryInput = document.getElementById('editProductSubCategory');
         const editProductTotalStockInput = document.getElementById('editProductTotalStock');
-        const editProductBasePriceInput = document.getElementById('editProductBasePrice');
+        
         
         const deleteProductNameSpan = document.getElementById('deleteProductName');
         
@@ -1166,87 +1123,29 @@
             }, 300);
         }
         
-        // Photo Upload Handler
-        function setupPhotoUpload(container) {
-            const uploadBoxes = container.querySelectorAll('.photo-upload-box');
-            
-            uploadBoxes.forEach(box => {
-                const input = box.querySelector('input[type="file"]');
-                const preview = box.querySelector('.photo-preview');
-                const removeBtn = box.querySelector('.remove-photo-btn');
-                
-                box.addEventListener('click', function(e) {
-                    if (!e.target.classList.contains('remove-photo-btn') && !e.target.closest('.remove-photo-btn')) {
-                        input.click();
-                    }
-                });
-                
-                input.addEventListener('change', function(e) {
-                    const file = e.target.files[0];
-                    if (file && file.type.startsWith('image/')) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            preview.src = e.target.result;
-                            box.classList.add('has-image');
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-                
-                removeBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    input.value = '';
-                    preview.src = '';
-                    box.classList.remove('has-image');
-                });
-            });
-        }
-        
-        setupPhotoUpload(document.getElementById('addProductPhotos'));
-        setupPhotoUpload(document.getElementById('editProductPhotos'));
-        
+        // Photo URL Handler
         function getPhotosFromContainer(container) {
+            const inputs = container.querySelectorAll('.photo-url-input');
             const photos = [];
-            const uploadBoxes = container.querySelectorAll('.photo-upload-box');
-            
-            uploadBoxes.forEach(box => {
-                const preview = box.querySelector('.photo-preview');
-                if (box.classList.contains('has-image') && preview.src) {
-                    photos.push(preview.src);
+            inputs.forEach(input => {
+                if (input.value.trim()) {
+                    photos.push(input.value.trim());
                 }
             });
-            
             return photos;
         }
         
         function setPhotosInContainer(container, photos) {
-            const uploadBoxes = container.querySelectorAll('.photo-upload-box');
-            
-            uploadBoxes.forEach((box, index) => {
-                const preview = box.querySelector('.photo-preview');
-                const input = box.querySelector('input[type="file"]');
-                
-                if (photos[index]) {
-                    preview.src = photos[index];
-                    box.classList.add('has-image');
-                } else {
-                    preview.src = '';
-                    input.value = '';
-                    box.classList.remove('has-image');
-                }
+            const inputs = container.querySelectorAll('.photo-url-input');
+            inputs.forEach((input, index) => {
+                input.value = photos[index] || '';
             });
         }
         
         function clearPhotosInContainer(container) {
-            const uploadBoxes = container.querySelectorAll('.photo-upload-box');
-            
-            uploadBoxes.forEach(box => {
-                const preview = box.querySelector('.photo-preview');
-                const input = box.querySelector('input[type="file"]');
-                
-                preview.src = '';
+            const inputs = container.querySelectorAll('.photo-url-input');
+            inputs.forEach(input => {
                 input.value = '';
-                box.classList.remove('has-image');
             });
         }
         
@@ -1361,10 +1260,13 @@
                 const name = item.querySelector('.variation-name').value.trim();
                 const stock = item.querySelector('.variation-stock').value.trim();
                 const price = item.querySelector('.variation-price').value.trim();
+                // We use defaults if id/unit/product_id are not visible in UI but we construct structure
+                // For new items, id is null.
                 
                 if (name && price) {
                     variations.push({
-                        name: name,
+                        name: name, // Maps to 'unit' in DB based heavily on context (e.g. 15kg)
+                        unit: name, 
                         stock: parseInt(stock) || 0,
                         price: parseFloat(price)
                     });
@@ -1380,7 +1282,9 @@
             
             if (variations && variations.length > 0) {
                 variations.forEach((variation, index) => {
-                    listElement.appendChild(createVariationItem(index, variation.name, variation.stock || 0, variation.price));
+                    // Map DB 'unit' to UI 'name'
+                    const name = variation.unit || variation.name || '';
+                    listElement.appendChild(createVariationItem(index, name, variation.stock || 0, variation.price));
                 });
             } else {
                 listElement.appendChild(createVariationItem(0));
@@ -1395,9 +1299,10 @@
             
             if (variations && variations.length > 0) {
                 variations.forEach(variation => {
+                    const name = variation.unit || variation.name || '';
                     const badge = document.createElement('span');
                     badge.className = 'variation-badge';
-                    badge.innerHTML = `${variation.name}: ${variation.stock || 0} pcs @ <span class="variation-price">₱${variation.price.toLocaleString('en-PH', {
+                    badge.innerHTML = `${name}: ${variation.stock || 0} pcs @ <span class="variation-price">₱${parseFloat(variation.price).toLocaleString('en-PH', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
                     })}</span>`;
@@ -1573,7 +1478,6 @@
             newProductCategoryInput.value = '';
             newProductSubCategoryInput.innerHTML = '<option value="">Select Sub-Category</option>';
             newProductTotalStockInput.value = '0';
-            newProductBasePriceInput.value = '';
             clearPhotosInContainer(document.getElementById('addProductPhotos'));
             setVariationsInContainer(document.getElementById('addProductVariations'), []);
             
@@ -1622,10 +1526,6 @@
                 const variations = row.dataset.variations ? JSON.parse(row.dataset.variations) : [];
                 setVariationsInContainer(document.getElementById('editProductVariations'), variations);
                 
-                // Set base price
-                const priceText = row.cells[7].textContent.replace('₱', '').replace(/,/g, '').trim();
-                editProductBasePriceInput.value = priceText;
-                
                 editProductModal.style.display = 'block';
             }
 
@@ -1661,9 +1561,8 @@
             const name = newProductNameInput.value.trim();
             const categoryId = newProductCategoryInput.value;
             const subcategoryId = newProductSubCategoryInput.value;
-            const basePrice = newProductBasePriceInput.value.trim();
             
-            if (!name || !categoryId || !subcategoryId || !basePrice) {
+            if (!name || !categoryId || !subcategoryId) {
                 showNotification('error', 'Error', 'Please fill in all required fields');
                 return;
             }
@@ -1674,15 +1573,17 @@
                 return;
             }
             
+            const photos = getPhotosFromContainer(document.getElementById('addProductPhotos'));
+            
             const formData = new FormData();
             formData.append('name', name);
             formData.append('category_id', categoryId);
             formData.append('sub_category_id', subcategoryId);
             formData.append('stock', calculateTotalStock(document.getElementById('addProductVariations')));
             formData.append('description', '');
-            formData.append('image1', 'no-image.png');
-            formData.append('image2', 'no-image.png');
-            formData.append('image3', 'no-image.png');
+            formData.append('image1', photos[0] || '');
+            formData.append('image2', photos[1] || '');
+            formData.append('image3', photos[2] || '');
 
             fetch('http://localhost/grizzlypaws-backend/admin/api/add_product.php', {
                 method: 'POST',
@@ -1711,9 +1612,8 @@
             const name = editProductNameInput.value.trim();
             const categoryId = editProductCategoryInput.value;
             const subcategoryId = editProductSubCategoryInput.value;
-            const basePrice = editProductBasePriceInput.value.trim();
             
-            if (!name || !categoryId || !subcategoryId || !basePrice) {
+            if (!name || !categoryId || !subcategoryId) {
                 showNotification('error', 'Error', 'Please fill in all required fields');
                 return;
             }
@@ -1770,7 +1670,8 @@
             const totalStock = variations.reduce((sum, v) => sum + (v.stock || 0), 0);
             row.cells[6].textContent = totalStock;
             
-            // Update price
+            // Update price (use first variation price)
+            const basePrice = variations.length > 0 ? variations[0].price : 0;
             const formattedPrice = '₱' + parseFloat(basePrice).toLocaleString('en-PH', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
@@ -1839,24 +1740,38 @@
                         
                         row.setAttribute('data-category', categoryMap[product.category] || product.category.toLowerCase());
                         row.setAttribute('data-subcategory', product.subcategory);
-                        row.dataset.photos = JSON.stringify([]);
-                        row.dataset.variations = JSON.stringify([]);
+                        
+                        // Map API images to array
+                        const photos = [];
+                        if (product.image1 && product.image1 !== 'no-image.png') photos.push(product.image1);
+                        if (product.image2 && product.image2 !== 'no-image.png') photos.push(product.image2);
+                        if (product.image3 && product.image3 !== 'no-image.png') photos.push(product.image3);
+                        row.dataset.photos = JSON.stringify(photos);
+                        
+                        row.dataset.variations = JSON.stringify(product.variations || []);
+                        
+                        // Store additional data
+                        row.dataset.description = product.description || '';
+                        row.dataset.status = product.status || '';
+                        row.dataset.created_at = product.created_at || '';
+                        row.dataset.category_id = product.category_id || '';
+                        row.dataset.sub_category_id = product.sub_category_id || '';
+
+                        const firstVariationPrice = product.variations && product.variations.length > 0 ? parseFloat(product.variations[0].price) : 0;
+                        const formattedPrice = '₱' + firstVariationPrice.toLocaleString('en-PH', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
 
                         row.innerHTML = `
                             <td><strong>${product.id}</strong></td>
                             <td>${product.name}</td>
                             <td>${product.category}</td>
                             <td>${product.subcategory}</td>
-                            <td>
-                                <div class="product-photos">
-                                    <span class="no-photos-text">No photos</span>
-                                </div>
-                            </td>
-                            <td class="variations-cell">
-                                <span class="no-variations-text">No variations</span>
-                            </td>
+                            <td class="photos-cell"></td>
+                            <td class="variations-cell"></td>
                             <td>${product.stock}</td>
-                            <td>₱0.00</td>
+                            <td>${formattedPrice}</td>
                             <td>
                                 <div style="display: flex; gap: 8px;">
                                     <button class="edit-product-btn" data-row-index="${index}">
@@ -1868,6 +1783,14 @@
                                 </div>
                             </td>
                         `;
+
+                        // Populate Photos Cell
+                        const photosCell = row.querySelector('.photos-cell');
+                        photosCell.appendChild(createPhotoDisplay(photos));
+
+                        // Populate Variations Cell
+                        const variationsCell = row.querySelector('.variations-cell');
+                        variationsCell.appendChild(createVariationsDisplay(product.variations || []));
 
                         productsTableBody.appendChild(row);
                     });

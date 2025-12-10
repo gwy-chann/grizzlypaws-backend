@@ -78,120 +78,11 @@
                         </tr>
                     </thead>
                     <tbody id="orders-table-body">
-                        <!-- Sample order row 1 -->
+                        <!-- Orders will be dynamically loaded here -->
                         <tr>
-                            <td><strong>PET87654</strong></td>
-                            <td>Pedigree Dental Stix</td>
-                            <td>Dog</td>
-                            <td>Dog Treats</td>
-                            <td>May 6, 2025</td>
-                            <td>May 9, 2025</td>
-                            <td>
-                                <span class="status-badge paid">Paid</span>
-                            </td>
-                            <td>
-                                <span class="status-badge pending">Pending</span>
-                            </td>
-                            <td>
-                                <!-- Action dropdown menu -->
-                                <div class="action-dropdown">
-                                    <button class="action-btn">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="action-menu">
-                                        <div class="action-item" data-action="view-details">View Order Details</div>
-                                        <div class="action-item" data-action="update-status">Update Order Status</div>
-                                        <div class="action-item" data-action="update-payment">Update Payment Status</div>
-                                        <div class="action-item delete" data-action="cancel">Cancel Order</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Sample order row 2 -->
-                        <tr>
-                            <td><strong>PET87655</strong></td>
-                            <td>Royal Canin Medium Adult</td>
-                            <td>Dog</td>
-                            <td>Dry Dog Food</td>
-                            <td>May 7, 2025</td>
-                            <td>May 8, 2025</td>
-                            <td>
-                                <span class="status-badge paid">Paid</span>
-                            </td>
-                            <td>
-                                <span class="status-badge preparing">Preparing</span>
-                            </td>
-                            <td>
-                                <!-- Action dropdown menu -->
-                                <div class="action-dropdown">
-                                    <button class="action-btn">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="action-menu">
-                                        <div class="action-item" data-action="view-details">View Order Details</div>
-                                        <div class="action-item" data-action="update-status">Update Order Status</div>
-                                        <div class="action-item" data-action="update-payment">Update Payment Status</div>
-                                        <div class="action-item delete" data-action="cancel">Cancel Order</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Sample order row 3 -->
-                        <tr>
-                            <td><strong>PET87656</strong></td>
-                            <td>Royal Canin Light Weight Care Wet Food</td>
-                            <td>Cat</td>
-                            <td>Wet Cat Food</td>
-                            <td>May 8, 2025</td>
-                            <td>May 9, 2025</td>
-                            <td>
-                                <span class="status-badge pending">Pending</span>
-                            </td>
-                            <td>
-                                <span class="status-badge pending">Pending</span>
-                            </td>
-                            <td>
-                                <!-- Action dropdown menu -->
-                                <div class="action-dropdown">
-                                    <button class="action-btn">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="action-menu">
-                                        <div class="action-item" data-action="view-details">View Order Details</div>
-                                        <div class="action-item" data-action="update-status">Update Order Status</div>
-                                        <div class="action-item" data-action="update-payment">Update Payment Status</div>
-                                        <div class="action-item delete" data-action="cancel">Cancel Order</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Sample order row 4 -->
-                        <tr>
-                            <td><strong>PET87657</strong></td>
-                            <td>Interactive Laser Pointer</td>
-                            <td>Cat</td>
-                            <td>Cat Toys</td>
-                            <td>May 9, 2025</td>
-                            <td>May 9, 2025</td>
-                            <td>
-                                <span class="status-badge paid">Paid</span>
-                            </td>
-                            <td>
-                                <span class="status-badge shipped">Shipped</span>
-                            </td>
-                            <td>
-                                <!-- Action dropdown menu -->
-                                <div class="action-dropdown">
-                                    <button class="action-btn">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="action-menu">
-                                        <div class="action-item" data-action="view-details">View Order Details</div>
-                                        <div class="action-item" data-action="update-status">Update Order Status</div>
-                                        <div class="action-item" data-action="update-payment">Update Payment Status</div>
-                                        <div class="action-item delete" data-action="cancel">Cancel Order</div>
-                                    </div>
-                                </div>
+                            <td colspan="9" style="text-align: center; padding: 40px;">
+                                <div class="loading-spinner" style="margin: 0 auto;"></div>
+                                <div style="color: #999; margin-top: 10px;">Loading orders...</div>
                             </td>
                         </tr>
                     </tbody>
@@ -224,9 +115,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Order Details - <span id="orderNumber"></span></h3>
+                <button class="modal-close-btn" onclick="document.getElementById('orderDetailsModal').style.display='none'">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="order-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Customer Name:</div>
+                        <div class="detail-value" id="detailCustomerName"></div>
+                    </div>
                     <div class="detail-row">
                         <div class="detail-label">Product:</div>
                         <div class="detail-value" id="detailProduct"></div>
@@ -268,6 +164,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Update Order Status</h3>
+                <button class="modal-close-btn" onclick="document.getElementById('updateStatusModal').style.display='none'">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -293,6 +190,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Update Payment Status</h3>
+                <button class="modal-close-btn" onclick="document.getElementById('updatePaymentModal').style.display='none'">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -316,6 +214,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Cancel Order</h3>
+                <button class="modal-close-btn" onclick="document.getElementById('cancelOrderModal').style.display='none'">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="delete-confirmation">
@@ -332,291 +231,7 @@
     </div>
 
     <!-- JAVASCRIPT SECTION -->
-    <script>
-        // Main initialization when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM element references
-            const orderDetailsModal = document.getElementById('orderDetailsModal');
-            const updateStatusModal = document.getElementById('updateStatusModal');
-            const updatePaymentModal = document.getElementById('updatePaymentModal');
-            const cancelOrderModal = document.getElementById('cancelOrderModal');
-            
-            const statusFilter = document.getElementById('status-filter');
-            const paymentFilter = document.getElementById('payment-filter');
-            
-            const actionBtns = document.querySelectorAll('.action-btn');
-            const actionItems = document.querySelectorAll('.action-item');
-            const cancelBtns = document.querySelectorAll('.btn-cancel');
-            const updateBtns = document.querySelectorAll('.btn-update');
-            const deleteBtn = document.querySelector('.btn-delete');
-            
-            // State variable to track current order row being edited
-            let currentOrderRow = null;
-
-            // Event listener for handling clicks on action buttons and dropdowns
-            document.addEventListener('click', function(e) {
-                // Close all dropdowns when clicking outside
-                if (!e.target.closest('.action-dropdown')) {
-                    document.querySelectorAll('.action-menu').forEach(menu => {
-                        menu.classList.remove('show');
-                    });
-                }
-                
-                // Handle action button clicks to show/hide dropdown menu
-                if (e.target.closest('.action-btn')) {
-                    const actionBtn = e.target.closest('.action-btn');
-                    const menu = actionBtn.nextElementSibling;
-                    
-                    // Close other open menus
-                    document.querySelectorAll('.action-menu').forEach(m => {
-                        if (m !== menu) {
-                            m.classList.remove('show');
-                        }
-                    });
-                    
-                    // Position menu near the button
-                    const rect = actionBtn.getBoundingClientRect();
-                    menu.style.position = 'fixed';
-                    menu.style.left = (rect.left - 180) + 'px';
-                    menu.style.top = (rect.bottom + 5) + 'px';
-                    
-                    // Toggle menu visibility
-                    menu.classList.toggle('show');
-                    
-                    // Store reference to current order row
-                    currentOrderRow = actionBtn.closest('tr');
-                }
-            });
-
-            // Event listener for view order details action
-            document.querySelectorAll('.action-item[data-action="view-details"]').forEach(item => {
-                item.addEventListener('click', function() {
-                    const row = this.closest('tr');
-                    const cells = row.cells;
-                    
-                    // Populate modal with order details
-                    document.getElementById('orderNumber').textContent = cells[0].textContent;
-                    document.getElementById('detailProduct').textContent = cells[1].textContent;
-                    document.getElementById('detailCategory').textContent = cells[2].textContent;
-                    document.getElementById('detailSubCategory').textContent = cells[3].textContent;
-                    document.getElementById('detailOrderDate').textContent = cells[4].textContent;
-                    document.getElementById('detailUpdatedDate').textContent = cells[5].textContent;
-                    document.getElementById('detailPaymentStatus').textContent = cells[6].textContent;
-                    document.getElementById('detailOrderStatus').textContent = cells[7].textContent;
-                    
-                    // Show modal and hide dropdown
-                    orderDetailsModal.style.display = 'block';
-                    this.closest('.action-menu').classList.remove('show');
-                });
-            });
-
-            // Event listener for update order status action
-            document.querySelectorAll('.action-item[data-action="update-status"]').forEach(item => {
-                item.addEventListener('click', function() {
-                    const row = this.closest('tr');
-                    const currentStatus = row.cells[7].querySelector('.status-badge').textContent.toLowerCase();
-                    
-                    // Set current status in dropdown
-                    document.getElementById('orderStatus').value = currentStatus;
-                    updateStatusModal.style.display = 'block';
-                    this.closest('.action-menu').classList.remove('show');
-                });
-            });
-
-            // Event listener for update payment status action
-            document.querySelectorAll('.action-item[data-action="update-payment"]').forEach(item => {
-                item.addEventListener('click', function() {
-                    const row = this.closest('tr');
-                    const currentPayment = row.cells[6].querySelector('.status-badge').textContent.toLowerCase();
-                    
-                    // Set current payment status in dropdown
-                    document.getElementById('paymentStatus').value = currentPayment;
-                    updatePaymentModal.style.display = 'block';
-                    this.closest('.action-menu').classList.remove('show');
-                });
-            });
-
-            // Event listener for cancel order action
-            document.querySelectorAll('.action-item[data-action="cancel"]').forEach(item => {
-                item.addEventListener('click', function() {
-                    const row = this.closest('tr');
-                    const orderNumber = row.cells[0].textContent;
-                    
-                    // Set order number in confirmation modal
-                    document.getElementById('cancelOrderNumber').textContent = orderNumber;
-                    cancelOrderModal.style.display = 'block';
-                    this.closest('.action-menu').classList.remove('show');
-                });
-            });
-
-            // Event listeners for cancel buttons in all modals
-            cancelBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const modal = this.closest('.modal');
-                    modal.style.display = 'none';
-                });
-            });
-
-            // Event listener for update order status button
-            updateBtns[0].addEventListener('click', function() {
-                if (currentOrderRow) {
-                    const newStatus = document.getElementById('orderStatus').value;
-                    const statusBadge = currentOrderRow.cells[7].querySelector('.status-badge');
-                    
-                    // Update status badge with new status
-                    statusBadge.className = 'status-badge ' + newStatus;
-                    statusBadge.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
-                    
-                    // Update the "updated on" date
-                    const currentDate = new Date().toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'short', 
-                        day: 'numeric' 
-                    });
-                    currentOrderRow.cells[5].textContent = currentDate;
-                    
-                    // Close modal and show success notification
-                    updateStatusModal.style.display = 'none';
-                    showNotification('success', 'Success!', 'Order status updated successfully!');
-                }
-            });
-
-            // Event listener for update payment status button
-            updateBtns[1].addEventListener('click', function() {
-                if (currentOrderRow) {
-                    const newPayment = document.getElementById('paymentStatus').value;
-                    const paymentBadge = currentOrderRow.cells[6].querySelector('.status-badge');
-                    
-                    // Update payment badge with new status
-                    paymentBadge.className = 'status-badge ' + newPayment;
-                    paymentBadge.textContent = newPayment.charAt(0).toUpperCase() + newPayment.slice(1);
-                    
-                    // Close modal and show success notification
-                    updatePaymentModal.style.display = 'none';
-                    showNotification('success', 'Success!', 'Payment status updated successfully!');
-                }
-            });
-
-            // Event listener for cancel order confirmation button
-            deleteBtn.addEventListener('click', function() {
-                if (currentOrderRow) {
-                    const statusBadge = currentOrderRow.cells[7].querySelector('.status-badge');
-                    
-                    // Update order status to cancelled
-                    statusBadge.className = 'status-badge cancelled';
-                    statusBadge.textContent = 'Cancelled';
-                    
-                    // Update the "updated on" date
-                    const currentDate = new Date().toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'short', 
-                        day: 'numeric' 
-                    });
-                    currentOrderRow.cells[5].textContent = currentDate;
-                    
-                    // Close modal and show success notification
-                    cancelOrderModal.style.display = 'none';
-                    showNotification('success', 'Success!', 'Order has been cancelled successfully!');
-                }
-            });
-
-            // Event listeners for filter dropdowns
-            statusFilter.addEventListener('change', filterOrders);
-            paymentFilter.addEventListener('change', filterOrders);
-            
-            //Filters orders based on selected status and payment filters
-            function filterOrders() {
-                const selectedStatus = statusFilter.value;
-                const selectedPayment = paymentFilter.value;
-                const rows = document.querySelectorAll('#orders-table-body tr');
-                
-                rows.forEach(row => {
-                    const orderStatus = row.cells[7].querySelector('.status-badge').textContent.toLowerCase();
-                    const paymentStatus = row.cells[6].querySelector('.status-badge').textContent.toLowerCase();
-                    
-                    let showRow = true;
-                    
-                    // Apply status filter
-                    if (selectedStatus !== 'all' && orderStatus !== selectedStatus) {
-                        showRow = false;
-                    }
-                    
-                    // Apply payment filter
-                    if (selectedPayment !== 'all' && paymentStatus !== selectedPayment) {
-                        showRow = false;
-                    }
-                    
-                    // Show or hide row based on filter results
-                    row.style.display = showRow ? '' : 'none';
-                });
-            }
-
-            // Event listener to close modals when clicking outside
-            window.addEventListener('click', function(event) {
-                const modals = [orderDetailsModal, updateStatusModal, updatePaymentModal, cancelOrderModal];
-                modals.forEach(modal => {
-                    if (event.target === modal) {
-                        modal.style.display = 'none';
-                    }
-                });
-            });
-
-
-            /* Displays a notification message*/
-            function showNotification(type, title, message, duration = 4000) {
-                const notification = document.createElement('div');
-                notification.className = `notification ${type}`;
-                
-                const icons = {
-                    success: 'fas fa-check-circle',
-                    error: 'fas fa-exclamation-circle',
-                    warning: 'fas fa-exclamation-triangle'
-                };
-                
-                notification.innerHTML = `
-                    <div class="notification-icon">
-                        <i class="${icons[type]}"></i>
-                    </div>
-                    <div class="notification-content">
-                        <div class="notification-title">${title}</div>
-                        <div class="notification-message">${message}</div>
-                    </div>
-                    
-                `;
-                // <button class="notification-close">
-                //     //     <i class="fas fa-times"></i>
-                //     // </button>
-                notificationContainer.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.classList.add('show');
-                }, 10);
-                
-                const closeBtn = notification.querySelector('.notification-close');
-                closeBtn.addEventListener('click', () => {
-                    hideNotification(notification);
-                });
-                
-                if (duration > 0) {
-                    setTimeout(() => {
-                        hideNotification(notification);
-                    }, duration);
-                }
-            }
-
-            /** Hides and removes a notification **/
-            function hideNotification(notification) {
-                notification.classList.remove('show');
-                notification.classList.add('hide');
-                
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 300);
-            }
-        });
-    </script>
+    <script src="../assets/js/manage_order.js"></script>
 
 </body>
 </html>
