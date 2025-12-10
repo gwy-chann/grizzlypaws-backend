@@ -78,15 +78,11 @@ try {
     $_SESSION['first_name'] = $user['first_name'];
     $_SESSION['email'] = $user['email'];
 
-<<<<<<< HEAD
-    echo json_encode(["status" => "success", "message" => "Login successful", "user_id" => $user['customer_id'] ]);
-=======
     echo json_encode([
         "status" => "success", 
         "message" => "Login successful",
         "user_id" => $user['customer_id']
     ]);
->>>>>>> 3d5effa14bf27189b5bc5fb9b153280bf7318dc0
     exit;
 
 } catch (PDOException $e) {

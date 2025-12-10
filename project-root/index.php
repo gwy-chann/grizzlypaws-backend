@@ -1,14 +1,5 @@
 <?php
-<<<<<<< HEAD
-// session_start();
-// if (!isset($_SESSION['user_id'])) {
-//     header("Location: pages/login.php");
-//     exit;
-// }
-=======
 session_start();
-
->>>>>>> 3d5effa14bf27189b5bc5fb9b153280bf7318dc0
 ?>
 
 <!DOCTYPE html>
