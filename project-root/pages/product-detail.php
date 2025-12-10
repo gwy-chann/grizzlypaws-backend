@@ -243,7 +243,6 @@
     <?php include '../includes/footer.php'; ?>
     
     <script src="../dummy-data/category.js"></script>
-    <script src="../dummy-data/products.js"></script>
     <script src="../assets/js/dynamic-display.js"></script>
     <!-- <script src="../assets/js/actions.js"></script>
     <script src="../assets/js/basket.js"></script> -->

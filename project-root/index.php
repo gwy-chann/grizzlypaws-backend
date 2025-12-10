@@ -15,6 +15,8 @@ session_start();
     <link rel="icon" type="image/x-icon" href="images/favicon.png" />
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/notification.css" />
+
+    
     <!-- <link rel="stylesheet" href="styles/css sub category/dog-dry-food.css" /> -->
     <link
       rel="stylesheet"
@@ -324,8 +326,8 @@ session_start();
       <div class="product-banner">
         <img src="assets/images/landing-page/productsBanner.png" alt="Product Banner">
       </div>
-      <div class="products_display" id="product_display">
-            <div class="product-card">
+   
+            <!-- <div class="product-card">
               <div class="product-image">
                 <a href="/grizzlypaws-backend/project-root/pages/product-detail.php?id=1">
                   <img
@@ -357,7 +359,14 @@ session_start();
                   <p class="delivery">Delivery in 3-6 working days</p>
                 </div>
               </a>
-            </div>
+            </div> -->
+
+      <section class="featured-product-section">
+          <h2 class="sub-section">Featured Product</h2>
+          <div class="featured-product-container" id="featured_product">
+            <!-- Will be populated by fetch-products.js -->
+          </div>
+      </section>
           </div>
       <!-- guide or tanong section -->
       <section class="question-section" aria-labelledby="about-heading">
@@ -493,6 +502,7 @@ session_start();
     <script src="assets/js/dynamic-display.js"></script>
     <script src="assets/js/more-products.js"></script>
     <script src="assets/js/actions.js"></script>
+    <script src="assets/js/fetch-products.js"></script>
     <script src="assets/js/top-products.js"></script>
 
   </body>

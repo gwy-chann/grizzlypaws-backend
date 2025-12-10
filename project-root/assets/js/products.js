@@ -88,7 +88,7 @@ function renderProducts(productsToRender) {
             })
             // Note: showSuccessModal is usually handled inside addToCart or its callback
             // Keeping existing logic:
-            // showSuccessModal(productId); 
+            showSuccessModal(productId); 
         })
     })
 }
