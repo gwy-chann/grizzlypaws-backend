@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grizzly Paws | My Profile</title>
+    <title>Grizzly Paws | My Purchase</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -13,8 +13,9 @@
     <link rel="stylesheet" href="../assets/css/style.css" />
     <link rel="stylesheet" href="../assets/css/trackorder.css">
     <link rel="stylesheet" href="../assets/css/purchase.css">
+    <link rel="stylesheet" href="../assets/css/purchase-modal.css">
   </head>
-  <body>
+  <body data-customer-id="<?php echo $_SESSION['customer_id'] ?? 1; ?>">
     <?php include '../includes/header.php'; ?>
 
     <main class="container">
@@ -88,7 +89,7 @@
         </div>
       </div>
 
-      <!-- Content area would go here -->
+      <!-- Content area -->
       <div class="purchase-container">
         <div class="page-header">
           <h1>Your Purchase History</h1>
@@ -107,270 +108,27 @@
               <option>Delivered</option>
               <option>Processing</option>
               <option>Shipped</option>
-              <option>Canceled</option>
+              <option>Cancelled</option>
             </select>
           </div>
           <div class="search-box">
-            <input type="text" placeholder="Search orders..." />
+            <input type="text" placeholder="Search by order number..." />
             <span class="search-icon">🔍</span>
           </div>
         </div>
 
         <div class="order-list">
-          <!-- Order 1 -->
-          <div class="order-card">
-            <div class="order-header">
-              <div class="order-header-group">
-                <div class="order-header-item">
-                  <div class="header-label">Order Date</div>
-                  <div class="header-value">May 6, 2025</div>
-                </div>
-                <div class="order-header-item">
-                  <div class="header-label">Order Number</div>
-                  <div class="header-value">#PET87654321</div>
-                </div>
-                <div class="order-header-item responsive-hide">
-                  <div class="header-label">Delivered On</div>
-                  <div class="header-value">May 9, 2025</div>
-                </div>
-              </div>
-              <div class="header-action">
-                <div class="status-badge status-delivered">Delivered</div>
-              </div>
-            </div>
-            <div class="order-content">
-              <div class="order-product">
-                <div class="product-image">
-                  <img
-                    src="/../../Product Images/Dog/Category 1 - Dry Dog Food/Category 1 - Products/Product 1 - Hill_s Prescription Diet/hillsPrescriptionDiet1.jpg"
-                    alt="Hill's Prescription Diet Canine z/d Food Sensitivities"
-                  />
-                </div>
-                <div class="product-details">
-                  <div class="product-name">
-                   Hill's Prescription Diet Canine z/d Food Sensitivities
-                  </div>
-                  <div class="product-weight">14kg</div>
-                  <div class="product-quantity">Quantity: 1</div>
-                </div>
-              </div>
-              <div class="order-summary">
-                <div class="order-price">₱3,999</div>
-                <div class="order-actions">
-                  <button class="action-button secondary-button">
-                    View Details
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Order 2 -->
-          <div class="order-card">
-            <div class="order-header">
-              <div class="order-header-group">
-                <div class="order-header-item">
-                  <div class="header-label">Order Date</div>
-                  <div class="header-value">Apr 17, 2025</div>
-                </div>
-                <div class="order-header-item">
-                  <div class="header-label">Order Number</div>
-                  <div class="header-value">#PET87623456</div>
-                </div>
-                <div class="order-header-item responsive-hide">
-                  <div class="header-label">Delivered On</div>
-                  <div class="header-value">Apr 20, 2025</div>
-                </div>
-              </div>
-              <div class="header-action">
-                <div class="status-badge status-delivered">Delivered</div>
-              </div>
-            </div>
-            <div class="order-content">
-              <div class="order-product">
-                <div class="product-image">
-                  <img
-                    src="/../../Product Images/bird/food/106033_pla_verselelaga_prestigeloro_parque_african_papageimix_hs_01_9.jpg.jpeg"
-                    alt="Lillebro Wild Bird Food with Berries"
-                  />
-                </div>
-                <div class="product-details">
-                  <div class="product-name">
-                   Lillebro Wild Bird Food with Berries
-                  </div>
-                  <div class="product-weight">1.5kg</div>
-                  <div class="product-quantity">Quantity: 1</div>
-                </div>
-              </div>
-              <div class="order-summary">
-                <div class="order-price">₱700</div>
-                <div class="order-actions">
-                  <button class="action-button secondary-button">
-                    View Details
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Order 3 -->
-          <div class="order-card">
-            <div class="order-header">
-              <div class="order-header-group">
-                <div class="order-header-item">
-                  <div class="header-label">Order Date</div>
-                  <div class="header-value">Mar 24, 2025</div>
-                </div>
-                <div class="order-header-item">
-                  <div class="header-label">Order Number</div>
-                  <div class="header-value">#PET87622345</div>
-                </div>
-                <div class="order-header-item responsive-hide">
-                  <div class="header-label">Expected Delivery</div>
-                  <div class="header-value">May 15, 2025</div>
-                </div>
-              </div>
-              <div class="header-action">
-                <div class="status-badge status-shipped">Shipped</div>
-              </div>
-            </div>
-            <div class="order-content">
-              <div class="order-product">
-                <div class="product-image">
-                  <img src="/../../Product Images/Cat/Category 1 - Dry Cat Food/Category 1 - Products/Product 1 - Orijen Original/OrijenCat.png" alt="Orijen Six Fish" />
-                </div>
-                <div class="product-details">
-                  <div class="product-name">
-                    Orijen Six Fish
-                  </div>
-                  <div class="product-weight">2kg</div>
-                  <div class="product-quantity">Quantity: 1</div>
-                </div>
-              </div>
-              <div class="order-summary">
-                <div class="order-price">₱1,999</div>
-                <div class="order-actions">
-                  <button class="action-button secondary-button">
-                    Track Order
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Order 4 -->
-          <div class="order-card">
-            <div class="order-header">
-              <div class="order-header-group">
-                <div class="order-header-item">
-                  <div class="header-label">Order Date</div>
-                  <div class="header-value">Mar 5, 2025</div>
-                </div>
-                <div class="order-header-item">
-                  <div class="header-label">Order Number</div>
-                  <div class="header-value">#PET87612345</div>
-                </div>
-                <div class="order-header-item responsive-hide">
-                  <div class="header-label">Status Update</div>
-                  <div class="header-value">Mar 6, 2025</div>
-                </div>
-              </div>
-              <div class="header-action">
-                <div class="status-badge status-processing">Processing</div>
-              </div>
-            </div>
-            <div class="order-content">
-              <div class="order-product">
-                <div class="product-image">
-                  <img
-                    src="/../../Product Images/Aquatic/Category 2 -  Fish Tanks & Aquariums/Category 2 - Products/Product 10 - Aquatic Fundamentals Black Scroll Aquarium Stand - for 10 Gallon Aquariums/Capture.PNG"
-                    alt="Marineland 5 Gallon Portrait Glass LED Aquarium Kit"
-                  />
-                </div>
-                <div class="product-details">
-                  <div class="product-name">
-                    Marineland 5 Gallon Portrait Glass LED Aquarium Kit
-                  </div>
-                  <div class="product-weight">White LED</div>
-                  <div class="product-quantity">Quantity: 1</div>
-                </div>
-              </div>
-              <div class="order-summary">
-                <div class="order-price">₱ 3,950</div>
-                <div class="order-actions">
-                  <button class="action-button secondary-button">
-                    View Details
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Order 5 -->
-          <div class="order-card">
-            <div class="order-header">
-              <div class="order-header-group">
-                <div class="order-header-item">
-                  <div class="header-label">Order Date</div>
-                  <div class="header-value">Feb 12, 2025</div>
-                </div>
-                <div class="order-header-item">
-                  <div class="header-label">Order Number</div>
-                  <div class="header-value">#PET87609876</div>
-                </div>
-                <div class="order-header-item responsive-hide">
-                  <div class="header-label">Status Update</div>
-                  <div class="header-value">Feb 13, 2025</div>
-                </div>
-              </div>
-              <div class="header-action">
-                <div class="status-badge status-canceled">Canceled</div>
-              </div>
-            </div>
-            <div class="order-content">
-              <div class="order-product">
-                <div class="product-image">
-                  <img src="/../../Product Images/Cat/Category 1 - Dry Cat Food/Category 1 - Products/Product 7 - Monello/MonelloCatFoodAdult.jpg" alt="Monello Cat Food Adult" />
-                </div>
-                <div class="product-details">
-                  <div class="product-name">
-                    Monello Cat Food Adult
-                  </div>
-                  <div class="product-weight">1kg</div>
-                  <div class="product-quantity">Quantity: 1</div>
-                </div>
-              </div>
-              <div class="order-summary">
-                <div class="order-price">₱ 799</div>
-                <div class="order-actions">
-                  <button class="action-button primary-button">Reorder</button>
-                </div>
-              </div>
-            </div>
+          <!-- Orders will be dynamically loaded here -->
+          <div class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Loading your orders...</p>
           </div>
         </div>
-
-        
-
-        <!-- <div class="empty-state">
-          <div class="empty-icon">📦</div>
-          <div class="empty-title">No Orders Found</div>
-          <div class="empty-text">
-            You haven't placed any orders yet or your search criteria didn't
-            match any orders.
-          </div>
-          <div class="empty-action">
-            <button class="action-button primary-button">Start Shopping</button>
-          </div>
-        </div> -->
       </div>
+
       <div class="pagination">
         <div class="page-button page-button-inactive">◀</div>
         <div class="page-button page-button-active">1</div>
-        <div class="page-button page-button-inactive">2</div>
-        <div class="page-button page-button-inactive">3</div>
-        <div class="page-button page-button-inactive">4</div>
-        <div class="page-button page-button-inactive">5</div>
         <div class="page-button page-button-inactive">▶</div>
       </div>
     </main>
@@ -380,5 +138,6 @@
     <script src="../dummy-data/products.js"></script>
     <script src="../assets/js/dynamic-display.js"></script>
     <script src="../assets/js/actions.js"></script>
+    <script src="../assets/js/purchase-history.js"></script>
   </body>
 </html>

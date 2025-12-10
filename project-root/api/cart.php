@@ -25,11 +25,11 @@ if ($method === "DELETE") {
         if (is_string($item_ids)) {
             $ids_array = json_decode($item_ids, true) ?? explode(',', $item_ids);
         } else {
-            $ids_array = $item_ids;
+            $ids_array = (array) $item_ids;
         }
 
         // Validate and sanitize IDs
-        $ids_array = array_filter(array_map('intval', $ids_array));
+        $ids_array = array_filter(array_map('intval', (array) $ids_array));
 
         if (empty($ids_array)) {
             echo json_encode([

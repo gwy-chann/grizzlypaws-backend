@@ -11,13 +11,15 @@ if (sub_products) {
     const productCardContainer = document.getElementById("product_grid")
     let subCategory_display = ''
 
-    document.getElementById("first-breadcrumb").innerText = toTitleCase(_category.replace("_", " "))
+    if (_category) {
+        document.getElementById("first-breadcrumb").innerText = toTitleCase(_category.replace("_", " "))
+    }
 
     sub_products.forEach((product) => {
         subCategory_display += `
         <div class="product-card">
           <div class="product-image">
-            <a href="/grizzlypaws-backend/project-root/pages/product-detail.php?id=${product.id}&cat-id=${_category}">
+            <a href="/grizzlypaws-backend/project-root/pages/subcategory.php?id=${product.id}&cat-id=${_category}">
               <img src="${product.images[0]}" alt = "${product.name}"/>
             </a>
             <button
@@ -62,8 +64,14 @@ if (sub_products) {
               id: productId,
               quantity: 1,
             })
-            showSuccessModal(productId);
         })
     })
     
+}
+
+function toTitleCase(str) {
+  return str.replace(
+    /\w\S*/g,
+    (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+  );
 }

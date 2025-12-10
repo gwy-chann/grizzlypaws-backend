@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 ?>
 
 <!DOCTYPE html>
@@ -276,7 +275,7 @@ session_start();
             <div class="products-grid" id="product_grid">
               <div class="product-card">
                 <div class="product-image">
-                  <a href="pages/products/item/index.html?id=1">
+                  <a href="/grizzlypaws-backend/project-root/pages/?id=1">
                     <img
                       src="images/Hill'sPrescriptionDietCanineDigestiveCare1.jpg"
                       alt="Hill's Prescription Diet Canine Metabolic"

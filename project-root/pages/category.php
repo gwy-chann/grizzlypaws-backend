@@ -132,7 +132,6 @@
         </div>
       </div>
     </div>
-    test
     <?php include '../includes/basket-modal.php'; ?>
     <?php include '../includes/footer.php'; ?>
     <script src="../dummy-data/category.js"></script>

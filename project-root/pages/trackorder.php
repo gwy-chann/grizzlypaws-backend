@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grizzly Paws | My Profile</title>
+    <title>Grizzly Paws | Track Order</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -12,8 +12,10 @@
     <link rel="stylesheet" href="../assets/css/user-profile.css" />
     <link rel="stylesheet" href="../assets/css/style.css" />
     <link rel="stylesheet" href="../assets/css/trackorder.css">
+    <link rel="stylesheet" href="../assets/css/trackorder-extra.css">
+    <link rel="stylesheet" href="../assets/css/purchase-modal.css">
   </head>
-  <body>
+  <body data-customer-id="<?php echo $_SESSION['customer_id'] ?? 1; ?>">
     <?php include '../includes/header.php'; ?>
 
     <main class="container">
@@ -86,102 +88,16 @@
         </div>
       </div>
 
-      <!-- Content area would go here -->
-
+      <!-- Content area -->
       <div class="order-container">
-        <div class="order-header">
-          <h1>Your Recent Purchase</h1>
-        </div>
-
-        <div class="order-status">
-          <div class="status-info">
-            <div class="status-text">Order Status</div>
-            <div class="status-value status-success">Delivered</div>
-          </div>
-          <div class="status-info">
-            <div class="status-text">Order Date</div>
-            <div class="status-value">May 6, 2025</div>
-          </div>
-          <div class="status-info">
-            <div class="status-text">Order Number</div>
-            <div class="status-value">#PET87654321</div>
-          </div>
-        </div>
-
-        <div class="progress-container">
-          <div class="progress-track">
-            <div class="progress-step">
-              <div class="step-icon">✓</div>
-              <div class="step-text">Order Placed</div>
-            </div>
-            <div class="progress-step">
-              <div class="step-icon">✓</div>
-              <div class="step-text">Processing</div>
-            </div>
-            <div class="progress-step">
-              <div class="step-icon">✓</div>
-              <div class="step-text">Shipped</div>
-            </div>
-            <div class="progress-step">
-              <div class="step-icon">✓</div>
-              <div class="step-text">Delivered May 9, 2025</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="delivery-info">
-          <div class="delivery-title">Your delivery</div>
-        </div>
-
-        <div class="product-item">
-          <div class="product-image">
-            <img
-              src="/../../Product Images/Aquatic/Category 1 - Aquarium Sand, Gravel & Substrates/Category 1 - Products/Product 1 - Fluval Plant and Shrimp Stratum, 8.8 lbs/Capture.PNG"
-              alt="Hill's Science Plan Dog Food"
-            />
-          </div>
-          <div class="product-details">
-            <div class="product-name">
-              Fluval Plant and Shrimp Staratum
-            </div>
-            <div class="product-weight">4.4lb</div>
-            <div class="product-weight">Quantity: 1</div>
-          </div>
-          <div class="product-price">₱750</div>
-        </div>
-
-        <div class="order-summary">
-          <div class="summary-row">
-            <div class="summary-label">Subtotal</div>
-            <div class="summary-value">₱750</div>
-          </div>
-          <div class="summary-row">
-            <div class="summary-label">Shipping</div>
-            <div class="summary-value">₱0.00</div>
-          </div>
-          <div class="summary-row">
-            <div class="summary-label">Tax</div>
-            <div class="summary-value">12%</div>
-          </div>
-          <div class="total-row">
-            <div class="total-label">Total</div>
-            <div class="total-value">₱ 840</div>
-          </div>
-        </div>
-
-        <div class="order-actions">
-         
-          <button class="action-button secondary-button"> <a href="/grizzlypaws-backend/project-root/pages/products/item/index.php?id=287&cat-id=aquatic">Reorder</a></button>
-          <button class="action-button primary-button">Track Package</button>
+        <div class="loading-container">
+          <div class="loading-spinner"></div>
+          <p style="text-align:center">Loading order details...</p>
         </div>
       </div>
     </main>
 
     <?php include '../includes/footer.php'; ?>
-    <script src="../dummy-data/category.js"></script>
-    <script src="../dummy-data/products.js"></script>
-    <script src="../assets/js/dynamic-display.js"></script>
-    <script src="../assets/js/actions.js"></script>
-    <script src="../assets/js/basket.js"></script>
+    <script src="../assets/js/track-order.js"></script>
   </body>
 </html>
