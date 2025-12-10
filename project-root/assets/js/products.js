@@ -1,3 +1,6 @@
+// Store all products globally for filtering
+let allProducts = [];
+
 function loadProducts() {
   const productUrlString = window.location.search;
   const prodUrlParams = new URLSearchParams(productUrlString);
@@ -14,22 +17,30 @@ function loadProducts() {
     });
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const products = await loadProducts();
-
+function renderProducts(productsToRender) {
   const productCardContainer = document.getElementById("product_grid");
   let productDisplay = '';
 
-  if (!products || products.length === 0) {
-    productCardContainer.innerHTML = '<p>No products found.</p>';
+  // Remove existing no results message if any
+  const noResultMsg = document.getElementById('noResultsMessage');
+  if (noResultMsg) noResultMsg.remove();
+
+  if (!productsToRender || productsToRender.length === 0) {
+    productCardContainer.innerHTML = ''; // Clear grid
+    // Show no results message
+    const noResultsMsg = document.createElement('p');
+    noResultsMsg.id = 'noResultsMessage';
+    noResultsMsg.style.cssText = 'text-align: center; color: #999; padding: 20px; grid-column: 1 / -1; width: 100%;';
+    noResultsMsg.textContent = 'No products found in this price range.';
+    productCardContainer.appendChild(noResultsMsg);
     return;
   }
 
-  products.forEach((product) => {
+  productsToRender.forEach((product) => {
       productDisplay += `
         <div class="product-card">
           <div class="product-image">
-            <a href="pages/products/item/index.html?id=${product.id}&cat-id=dog">
+            <a href="/grizzlypaws-backend/project-root/pages/product-detail.php?id=${product.id}&cat-id=dog">
               <img src="${product.image1}" alt = "${product.name}"/>
             </a>
             <button
@@ -41,7 +52,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             </button>
           </div>
 
-          <a href="pages/products/item/index.html?id=${product.id}&cat-id=dog" class="product-details-link">
+          <a href="/grizzlypaws-backend/project-root/pages/product-detail.php?id=${product.id}&cat-id=dog" class="product-details-link">
             <div class="product-details">
             
               <h3 class="product-title">${product.name}</h3>
@@ -62,7 +73,9 @@ document.addEventListener("DOMContentLoaded", async () => {
    `
   });
 
-    productCardContainer.innerHTML = productDisplay
+    productCardContainer.innerHTML = productDisplay;
+    
+    // Re-attach listeners
     const addToCartBtn = document.querySelectorAll(".add-to-basket-button");
     addToCartBtn.forEach((button) => {
         button.addEventListener('click', (event) => {
@@ -73,9 +86,91 @@ document.addEventListener("DOMContentLoaded", async () => {
               id: productId,
               quantity: 1,
             })
-            showSuccessModal(productId);
+            // Note: showSuccessModal is usually handled inside addToCart or its callback
+            // Keeping existing logic:
+            // showSuccessModal(productId); 
         })
     })
+}
+
+// Logic to filter products
+function applyPriceFilter(min, max) {
+    const filtered = allProducts.filter(product => {
+        const price = parseFloat(product.variations[0].price);
+        return price >= min && price <= max;
+    });
+    renderProducts(filtered);
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  allProducts = await loadProducts(); // Fetch and store
+  renderProducts(allProducts);      // Initial render
+
+  // --- Filter Event Listeners ---
+  const minPriceInput = document.getElementById('minPrice');
+  const maxPriceInput = document.getElementById('maxPrice');
+  const applyFilterBtn = document.getElementById('applyPriceFilter');
+  const clearFilterBtn = document.getElementById('clearPriceFilter');
+  const quickPriceOptions = document.querySelectorAll('.price-option-btn');
+  const filterToggleBtn = document.getElementById('filterToggleBtn');
+  const sidebarContent = document.getElementById('sidebarContent');
+
+  // Mobile Toggle
+  if (filterToggleBtn && sidebarContent) {
+      filterToggleBtn.addEventListener('click', function() {
+          this.classList.toggle('active');
+          sidebarContent.classList.toggle('active');
+      });
+  }
+
+  // Apply Manual Filter
+  if (applyFilterBtn) {
+    applyFilterBtn.addEventListener('click', function() {
+        const minPrice = parseFloat(minPriceInput.value) || 0;
+        const maxPrice = parseFloat(maxPriceInput.value) || Infinity;
+        
+        if (minPrice > maxPrice && maxPrice !== Infinity) {
+            alert('Minimum price cannot be greater than maximum price');
+            return;
+        }
+
+        // Remove active class from quick options
+        quickPriceOptions.forEach(btn => btn.classList.remove('active'));
+        
+        applyPriceFilter(minPrice, maxPrice);
+    });
+  }
+
+  // Clear Filter
+  if (clearFilterBtn) {
+    clearFilterBtn.addEventListener('click', function() {
+        if(minPriceInput) minPriceInput.value = '';
+        if(maxPriceInput) maxPriceInput.value = '';
+        
+        // Remove active class from quick options
+        quickPriceOptions.forEach(btn => btn.classList.remove('active'));
+        
+        renderProducts(allProducts); // Reset to all
+    });
+  }
+
+  // Quick Options
+  quickPriceOptions.forEach(btn => {
+      btn.addEventListener('click', function() {
+          const minPrice = parseFloat(this.dataset.min);
+          const maxPrice = parseFloat(this.dataset.max);
+          
+          // Set input values
+          if(minPriceInput) minPriceInput.value = minPrice === 0 ? '' : minPrice;
+          if(maxPriceInput) maxPriceInput.value = maxPrice === 999999 ? '' : maxPrice;
+          
+          // Toggle active class
+          quickPriceOptions.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          applyPriceFilter(minPrice, maxPrice);
+      });
+  });
 
 });
 

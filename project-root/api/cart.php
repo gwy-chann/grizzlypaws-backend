@@ -37,7 +37,7 @@ if ($method === "DELETE") {
                 "message" => "No valid item IDs provided"
             ]);
             exit();
-        }
+        }   
 
         // Create placeholders for prepared statement
         $placeholders = implode(',', array_fill(0, count($ids_array), '?'));

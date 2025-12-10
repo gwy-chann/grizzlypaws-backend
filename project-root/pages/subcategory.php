@@ -44,11 +44,19 @@
             Welcome to the ultimate online destination for all your pet care needs, offering an extensive selection of premium products at competitive prices with fast delivery across the country. Our comprehensive range caters to every beloved companion - from playful puppies and curious kittens to small pets and colorful fish. 
       
             Join thousands of satisfied pet parents who trust us for their furry, feathery, and scaly family members' needs. Explore our most popular categories including 
+<<<<<<< HEAD
             <a href="/grizzlypaws-backend/project-root/pages/category.php?cat-id=dog"><span class="highlight">Dog Supplies</span></a>,
             <a href="/grizzlypaws-backend/project-root/pages/category.php?cat-id=cat"><span class="highlight">Cat Essentials</span></a>,
             <a href="/grizzlypaws-backend/project-root/pages/category.php"><span class="highlight">Small Pet Care</span></a>, 
             <a href="/grizzlypaws-backend/project-root/pages/category.php"><span class="highlight">Feathered </span></a> and
             <a href="/grizzlypaws-backend/project-root/pages/category.php"><span class="highlight">Aquatic</span></a>
+=======
+            <a href="/grizzlypaws-backend/project-root/pages/category/index.php?cat-id=dog"><span class="highlight">Dog Supplies</span></a>,
+            <a href="/grizzlypaws-backend/project-root/pages/category/index.php?cat-id=cat"><span class="highlight">Cat Essentials</span></a>,
+            <a href="/grizzlypaws-backend/project-root/pages/category/index.php?cat-id=small_pet"><span class="highlight">Small Pet Care</span></a>, 
+            <a href="/grizzlypaws-backend/project-root/pages/category/index.php?cat-id=feathered"><span class="highlight">Feathered </span></a> and
+            <a href="/grizzlypaws-backend/project-root/pages/category/index.php?cat-id=aquatic"><span class="highlight">Aquatic</span></a>
+>>>>>>> 3d5effa14bf27189b5bc5fb9b153280bf7318dc0
           </p>
         </div>
 

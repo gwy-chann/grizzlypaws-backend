@@ -87,7 +87,7 @@
               <a href="/grizzlypaws-backend/project-root/pages/user.php">My Account</a>
               <a href="/grizzlypaws-backend/project-root/pages/purchase.php">My Purchase</a>
               <a href="/grizzlypaws-backend/project-root/pages/wishlist.php">Wishlist</a>
-              <a href="login.php">Logout</a>
+              <a href="/grizzlypaws-backend/project-root/controller/logout.php">Logout</a>
             </div>
           </div>
         </div>

@@ -5,15 +5,21 @@ const prodParamValue = prodUrlParams.get('id')
 const _category = prodUrlParams.get('cat-id')
 
 
-const product = products.find((product)=> parseInt(prodParamValue) ===  product.id)
 
+document.addEventListener("DOMContentLoaded", async function() {
+  
+  const response = await fetch(
+    `http://localhost/grizzlypaws-backend/admin/api/get_products.php?product-id=${prodParamValue}
+    }`
+  );
 
+  const data = await response.json();
+  const product = data[0];
 
-
-if (product) {
+  if (product) {
     const display_image = document.getElementById("display_image")
 
-    display_image.src = product.images[0]
+    display_image.src = product.image1
 
     document.getElementById("first-breadcrumb").innerText = toTitleCase(_category.replace("_", " "))
 
@@ -33,8 +39,11 @@ if (product) {
     const thumbnails = document.getElementById("thumbnail-container")
     let thumbnail_display  = ''
 
+
+    const imageArr = [product.image1, product.image2, product.image3];
+
   
-    product.images.forEach((image, index) => {
+    imageArr.forEach((image, index) => {
         if (index == 0) {
             thumbnail_display += ` 
             <div class="thumbnail active">
@@ -54,7 +63,7 @@ if (product) {
     product_title.innerHTML = product.name
 
     const product_description = document.getElementById("product_description")
-    product_description.innerHTML = product.description
+    product_description.innerHTML = product?.description || 'No description available.'
 
     const custom_select = document.getElementById("custom_select")
 
@@ -63,7 +72,7 @@ if (product) {
          option_display += `<option value="${variation.unit}" data-price="${variation.price}">${variation.unit}</option>`
     });
 
-    custom_select.innerHTML = option_display
+    custom_select.innerHTML = option_display;
 
     const addToCartButton = document.getElementById('myBasket')
     addToCartButton.setAttribute('data-id', product.id)
@@ -71,10 +80,11 @@ if (product) {
     // for price of product
     const select = document.querySelector('.custom-select');
 
-    updatePrice(select.value);
+    console.log(product);
+    updatePrice(select.value, product);
 
     select.addEventListener('change', function () {
-      updatePrice(this.value);
+      updatePrice(this.value, product);
     });
 
 
@@ -93,32 +103,40 @@ if (product) {
         name: product.name,
         quantity: parseInt(quantityInput.value) || 1,
         unit: value,
-      });
+      }, true, 
+     {
+      variation_id: product.variations.find(variation => variation.unit === value).id,
+      quantity: parseInt(quantityInput.value),
+      final_price: product.variations.find(variation => variation.unit === value).price * (parseInt(quantityInput.value) || 1),
+      unit: product.variations.find(variation => variation.unit === value).unit
+     }
+    );
       showSuccessModal(productId);
     });
     
-
-
 
 }
 
 
 
-function updatePrice(selectedValue) {
+
+function updatePrice(selectedValue, product) {
   let price = 0;
 
-
-  const selectedVariation = product.variations.find(variation => variation.unit === selectedValue);
+  const selectedVariation = product.variations?.find(variation => variation.unit === selectedValue);
   if (selectedVariation) {
     price = selectedVariation.price;
   }
 
-
+  // console.log(selectedValue, product);
   const priceDiv = document.querySelector('.price');
   const originalPriceDiv = document.querySelector('.original-price');
-
 
   priceDiv.textContent = `₱ ${price.toLocaleString()}`;
   const originalPrice = price + 1000;
   originalPriceDiv.textContent = `₱ ${originalPrice.toLocaleString()}`;
 }
+
+
+})
+

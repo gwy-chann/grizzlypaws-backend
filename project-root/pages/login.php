@@ -74,7 +74,7 @@
         </form>
 
         <div class="continue-without-account">
-          <p><a href="index.html" id="continue">Continue without account</a></p>
+          <p><a href="/grizzlypaws-backend/project-root/index.php" id="continue">Continue without account</a></p>
         </div>
     
 

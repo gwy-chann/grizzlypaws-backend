@@ -1,9 +1,14 @@
 <?php
+<<<<<<< HEAD
 // session_start();
 // if (!isset($_SESSION['user_id'])) {
 //     header("Location: pages/login.php");
 //     exit;
 // }
+=======
+session_start();
+
+>>>>>>> 3d5effa14bf27189b5bc5fb9b153280bf7318dc0
 ?>
 
 <!DOCTYPE html>
@@ -331,7 +336,7 @@
       <div class="products_display" id="product_display">
             <div class="product-card">
               <div class="product-image">
-                <a href="pages/products/item/index.html?id=1">
+                <a href="/grizzlypaws-backend/project-root/pages/product-detail.php?id=1">
                   <img
                     src="images/Hill'sPrescriptionDietCanineDigestiveCare1.jpg"
                     alt="Hill's Prescription Diet Canine Metabolic"
@@ -343,7 +348,7 @@
               </div>
 
               <a
-                href="pages/products/item/index.html?id=1"
+                href="/grizzlypaws-backend/project-root/pages/product-detail.php?id=1"
                 class="product-details-link"
               >
                 <div class="product-details">
