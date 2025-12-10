@@ -269,8 +269,6 @@ window.clearBasket = clearBasket;
 
 // Checkbox functionality and Payment Modal
 document.addEventListener("DOMContentLoaded", function () {
-  const selectAllCheckbox = document.getElementById("select-all-checkbox");
-  const itemTableBody = document.getElementById("item-table-body");
   const checkoutBtn = document.querySelector(".checkout-button");
   const paymentModal = document.getElementById("paymentModal");
   const successModal = document.getElementById("myModal");
@@ -369,18 +367,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Checkout button click handler
   checkoutBtn.addEventListener("click", async function () {
-    const response = await fetch(
-      `http://localhost/grizzlypaws-backend/project-root/api/cart.php?customer-id=${sessionStorage.getItem("user_id")}`
-    );
-    let data = await response.json();
-    const cart_items = data.items || [];
+    // const response = await fetch(
+    //   `http://localhost/grizzlypaws-backend/project-root/api/cart.php?customer-id=${sessionStorage.getItem("user_id")}`
+    // );
+    // let data = await response.json();
+    // const cart_items = data.items || [];
 
-    if (cart_items.length === 0) {
-      alert(
-        "Your the basket is empty. Please add items to your basket before proceeding to checkout."
-      );
-      return;
-    }
+    // if (cart_items.length === 0) {
+    //   alert(
+    //     "Your the basket is empty. Please add items to your basket before proceeding to checkout."
+    //   );
+    //   return;
+    // }
+
+    console.log(generateRandomId());
 
     // Check if at least one item is selected
     const checkedItems = document.querySelectorAll(".item-checkbox:checked");
@@ -563,3 +563,11 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 });
+
+
+function generateRandomId() {
+  const prefix = 'PET';
+  const randomNumber = Math.floor(Math.random() * 100000000);
+  const paddedNumber = String(randomNumber).padStart(8, '0');
+  return prefix + paddedNumber;
+}

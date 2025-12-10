@@ -135,6 +135,7 @@ loginForm.addEventListener('submit', (e) => {
         if (data.status === 'success') {
             showSuccessMessage('Login successful! Redirecting...');
             sessionStorage.setItem('loggedInUser', email);
+            sessionStorage.setItem("user_id", data.user_id)
             sessionStorage.removeItem('isAdmin');
             setTimeout(() => {
                 window.location.href = '../index.php';
