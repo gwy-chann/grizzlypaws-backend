@@ -161,7 +161,7 @@
       <!-- Review Section -->
       <section class="reviews-section">
         <div class="reviews-header">
-            <h2>Customer Reviews</h2>
+            <!-- <h2>Customer Reviews</h2> -->
             <button class="write-review-btn" id="writeReviewBtn">
             <i class="fas fa-pen"></i>
             Write a Review
@@ -245,8 +245,8 @@
     <script src="../dummy-data/category.js"></script>
     <script src="../dummy-data/products.js"></script>
     <script src="../assets/js/dynamic-display.js"></script>
-    <script src="../assets/js/actions.js"></script>
-    <script src="../assets/js/basket.js"></script>
+    <!-- <script src="../assets/js/actions.js"></script>
+    <script src="../assets/js/basket.js"></script> -->
     <script src="../assets/js/product-detail.js"></script>
     <script src="../assets/js/display-product.js"></script>
     <script src="../assets/js/review.js"></script>

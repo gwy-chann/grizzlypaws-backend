@@ -1,9 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: pages/login.php");
-    exit;
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -125,7 +122,7 @@ if (!isset($_SESSION['user_id'])) {
           Shop for your pet
         </h2>
         <div class="pet-categories">
-          <a href="pages/category/index.html?cat-id=dog" class="pet-category">
+          <a href="/grizzlypaws-backend/project-root/pages/category.php?cat-id=dog" class="pet-category">
             <div class="pet-image-container dog-bg">
               <img
                 src="assets/images/category-images/dog_cat.png"
@@ -137,7 +134,7 @@ if (!isset($_SESSION['user_id'])) {
             <div class="pet-name">Dog</div>
           </a>
 
-          <a href="pages/category/index.html?cat-id=cat" class="pet-category">
+          <a href="/grizzlypaws-backend/project-root/pages/category.php?cat-id=cat" class="pet-category">
             <div class="pet-image-container cat-bg">
               <img
                 src="assets/images/category-images/cat_cat.png"
@@ -150,7 +147,7 @@ if (!isset($_SESSION['user_id'])) {
           </a>
 
           <a
-            href="pages/category/index.html?cat-id=small_pet"
+            href="/grizzlypaws-backend/project-root/pages/category.php?cat-id=small_pet"
             class="pet-category"
           >
             <div class="pet-image-container small_pet-bg">
@@ -165,7 +162,7 @@ if (!isset($_SESSION['user_id'])) {
           </a>
 
           <a
-            href="pages/category/index.html?cat-id=feathered"
+            href="/grizzlypaws-backend/project-root/pages/category.php?cat-id=feathered"
             class="pet-category"
           >
             <div class="pet-image-container bird-bg">
@@ -180,7 +177,7 @@ if (!isset($_SESSION['user_id'])) {
           </a>
 
           <a
-            href="pages/category/index.html?cat-id=aquatic"
+            href="/grizzlypaws-backend/project-root/pages/category.php?cat-id=aquatic"
             class="pet-category"
           >
             <div class="pet-image-container fish-bg">
@@ -331,7 +328,7 @@ if (!isset($_SESSION['user_id'])) {
       <div class="products_display" id="product_display">
             <div class="product-card">
               <div class="product-image">
-                <a href="pages/products/item/index.html?id=1">
+                <a href="/grizzlypaws-backend/project-root/pages/product-detail.php?id=1">
                   <img
                     src="images/Hill'sPrescriptionDietCanineDigestiveCare1.jpg"
                     alt="Hill's Prescription Diet Canine Metabolic"
@@ -343,7 +340,7 @@ if (!isset($_SESSION['user_id'])) {
               </div>
 
               <a
-                href="pages/products/item/index.html?id=1"
+                href="/grizzlypaws-backend/project-root/pages/product-detail.php?id=1"
                 class="product-details-link"
               >
                 <div class="product-details">

@@ -1,4 +1,4 @@
-async function addToCart(orderDetails) {
+async function addToCart(orderDetails, customVariationId = false, selectedDetails = {}) {
   const response = await fetch(
     `http://localhost/grizzlypaws-backend/admin/api/get_products.php?product-id=${orderDetails.id}
     }`
@@ -6,6 +6,13 @@ async function addToCart(orderDetails) {
 
   const data = await response.json();
   const product = data[0];
+
+  const userId = sessionStorage.getItem('user_id');
+  if (!userId) {
+      alert("Please log in to add items to your cart.");
+      window.location.href = "/grizzlypaws-backend/project-root/pages/login.php";
+      return;
+  }
 
   try {
     console.log("Product to add:", product);
@@ -17,25 +24,22 @@ async function addToCart(orderDetails) {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
-          user_id: 1, // Replace with actual user ID
+          user_id: userId,
           product_id: product.id,
-          variation_id: product.variations[0].id,
-          quantity: 1,
-          final_price: 1 * product.variations[0].price,
+          variation_id: customVariationId ? selectedDetails.variation_id: product.variations[0].id,
+          quantity: customVariationId ? selectedDetails.quantity : 1,
+          final_price: customVariationId ? selectedDetails.final_price : 1 * product.variations[0].price,
         }).toString(),
       }
     );
 
-    const data = await response.json();
-    console.log("Adding to cart:", orderDetails, data);
 
     if (response.ok) {
-
-      
+     
       showSuccessModal({
         quantity: 1,
         title: product.name,
-        unit: product.variations[0].unit,
+        unit: customVariationId ? selectedDetails.unit : product.variations[0].unit,
       });
     }
   } catch (error) {

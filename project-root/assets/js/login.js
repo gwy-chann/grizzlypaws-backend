@@ -119,7 +119,7 @@ loginForm.addEventListener('submit', (e) => {
         sessionStorage.setItem('loggedInUser', 'admin');
         sessionStorage.setItem('isAdmin', 'true');
         setTimeout(() => {
-            window.location.href = '../../../admin/index.php';
+            window.location.href = '/grizzlypaws-backend/admin/index.php';
         }, 800);
         return;
     }
@@ -135,6 +135,9 @@ loginForm.addEventListener('submit', (e) => {
         if (data.status === 'success') {
             showSuccessMessage('Login successful! Redirecting...');
             sessionStorage.setItem('loggedInUser', email);
+            if (data.user_id) {
+                sessionStorage.setItem('user_id', data.user_id);
+            }
             sessionStorage.removeItem('isAdmin');
             setTimeout(() => {
                 window.location.href = '../index.php';
@@ -205,7 +208,7 @@ signupBtn.addEventListener('click', (e) => {
     if (!isValid) return;
 
     // Send signup to server
-    fetch('controller/signup.php', {
+    fetch('../controller/signup.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

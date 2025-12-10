@@ -341,156 +341,182 @@
         const notificationContainer = document.getElementById('notificationContainer');
         
         let currentDeleteRowIndex = null;
+        let currentDeleteId = null; // Store ID for API deletion
         let hiddenReviews = [];
-        
-        const subcategories = {
-            'dog': ['Dry Dog Food', 'Wet Dog Food', 'Dog Treats', 'Dog Toys', 'Dog Accessories'],
-            'cat': ['Dry Cat Food', 'Wet Cat Food', 'Cat Treats', 'Cat Toys', 'Cat Litter'],
-            'small-pet': ['Rabbit Food', 'Hamster Food', 'Guinea Pig Food', 'Small Pet Toys'],
-            'feathered': ['Bird Food', 'Bird Cages', 'Bird Toys'],
-            'aquatic': ['Fish Food', 'Aquarium Supplies', 'Water Treatments']
-        };
+        let allReviews = []; // Store fetched reviews
 
-        const reviewData = [
-            {
-                product: "Pedigree Adult Dry Dog Food",
-                category: "Dog",
-                subcategory: "Dry Dog Food",
-                reviewer: "John Smith",
-                date: "May 10, 2025",
-                rating: 5,
-                text: "My dog absolutely loves this food! His coat is shinier and he has more energy. I've been using this brand for over a year now and I'm very satisfied with the results. Would definitely recommend to other dog owners."
-            },
-            {
-                product: "Interactive Laser Pointer",
-                category: "Cat",
-                subcategory: "Cat Toys",
-                reviewer: "Sarah Johnson",
-                date: "May 8, 2025",
-                rating: 4,
-                text: "My cats enjoy playing with this laser pointer. It keeps them active and entertained. The only downside is that the battery life could be better. Overall, a good purchase for the price."
-            },
-            {
-                product: "Pedigree Dental Stix",
-                category: "Dog",
-                subcategory: "Dog Treats",
-                reviewer: "Mike Thompson",
-                date: "May 5, 2025",
-                rating: 3,
-                text: "My dog likes the taste of these dental sticks, but I'm not sure how effective they are for dental health. They seem to help with breath freshness but I haven't noticed much improvement in plaque reduction."
-            },
-            {
-                product: "Royal Canin Light Weight Care Wet Food",
-                category: "Cat",
-                subcategory: "Wet Cat Food",
-                reviewer: "Emily Davis",
-                date: "May 3, 2025",
-                rating: 2,
-                text: "My cat refused to eat this food. I tried mixing it with her regular food but she would pick around it. The texture seems different from other wet foods we've tried. Disappointed with this purchase."
-            },
-            {
-                product: "Durable Chew Toy",
-                category: "Dog",
-                subcategory: "Dog Toys",
-                reviewer: "Robert Wilson",
-                date: "May 1, 2025",
-                rating: 5,
-                text: "This chew toy is amazing! My German Shepherd hasn't been able to destroy it after weeks of chewing. It's the perfect size and texture for aggressive chewers. Highly recommended for large breed dogs."
+        // Initial Load
+        fetchReviews();
+
+        async function fetchReviews() {
+            try {
+                const response = await fetch('/grizzlypaws-backend/project-root/api/admin_reviews.php');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    allReviews = result.data;
+                    renderReviewsTable(allReviews);
+                } else {
+                    console.error("Failed to fetch reviews: " + result.message);
+                }
+            } catch (error) {
+                console.error("Error fetching reviews:", error);
             }
-        ];
+        }
 
-        function populateSubcategories(category) {
-            subcategoryFilter.innerHTML = '<option value="all">All Subcategories</option>';
+        function renderReviewsTable(reviews) {
+            reviewsTableBody.innerHTML = '';
             
-            if (category !== 'all' && subcategories[category]) {
-                subcategories[category].forEach(subcat => {
-                    const option = document.createElement('option');
-                    option.value = subcat.toLowerCase().replace(/\s+/g, '-');
-                    option.textContent = subcat;
-                    subcategoryFilter.appendChild(option);
+            // Filter out hidden reviews for the main table (optional: or show them dimmed)
+            // But requirement says "when admin hide it... still visible to the user... BUT hidden in other users"
+            // Usually Admin panel shows ALL. If we want a separate "Hidden Reviews" tab/modal, we filter here.
+            // The existing UI has a "View Hidden Reviews" button so let's separate them.
+            
+            const visibleReviews = reviews.filter(r => r.is_hidden != 1);
+            hiddenReviews = reviews.filter(r => r.is_hidden == 1); // Store for modal
+
+            if (visibleReviews.length === 0) {
+                reviewsTableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">No visible reviews found.</td></tr>';
+            } else {
+                visibleReviews.forEach((review, index) => {
+                    const tr = document.createElement('tr');
+                    tr.setAttribute('data-category', (review.category_name || '').toLowerCase());
+                    tr.setAttribute('data-subcategory', (review.subcategory_name || '').toLowerCase().replace(/\s+/g, '-'));
+                    tr.setAttribute('data-id', review.review_id);
+
+                    const starsHtml = renderStars(parseInt(review.rating));
+                    const formattedDate = new Date(review.created_at).toLocaleDateString();
+
+                    tr.innerHTML = `
+                        <td><strong>${review.review_id}</strong></td>
+                        <td>${review.product_name}</td>
+                        <td>${review.category_name}</td>
+                        <td>${review.subcategory_name}</td>
+                        <td><div class="star-rating">${starsHtml}</div></td>
+                        <td>${review.reviewer_name || 'Anonymous'}</td>
+                        <td>${formattedDate}</td>
+                        <td>
+                            <div class="action-dropdown">
+                                <button class="action-btn"><i class="fas fa-ellipsis-h"></i></button>
+                                <div class="action-menu">
+                                    <div class="action-item" data-action="view-review">View Review</div>
+                                    <div class="action-item" data-action="hide-review">Hide Review</div>
+                                    <div class="action-item delete" data-action="delete">Delete</div>
+                                </div>
+                            </div>
+                        </td>
+                    `;
+                    reviewsTableBody.appendChild(tr);
                 });
             }
-            
-            filterReviews();
+            attachActionListeners();
         }
 
-        function showNotification(type, title, message, duration = 4000) {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            
-            const icons = {
-                success: 'fas fa-check-circle',
-                error: 'fas fa-exclamation-circle',
-                warning: 'fas fa-exclamation-triangle'
-            };
-            
-            notification.innerHTML = `
-                <div class="notification-icon">
-                    <i class="${icons[type]}"></i>
-                </div>
-                <div class="notification-content">
-                    <div class="notification-title">${title}</div>
-                    <div class="notification-message">${message}</div>
-                </div>
-                <button class="notification-close">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
-            
-            notificationContainer.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 10);
-            
-            const closeBtn = notification.querySelector('.notification-close');
-            closeBtn.addEventListener('click', () => {
-                hideNotification(notification);
-            });
-            
-            if (duration > 0) {
-                setTimeout(() => {
-                    hideNotification(notification);
-                }, duration);
+        function renderStars(rating) {
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                html += `<i class="fa${i <= rating ? 's' : 'r'} fa-star"></i>`;
             }
+            return html;
         }
-        
-        function hideNotification(notification) {
-            notification.classList.remove('show');
-            notification.classList.add('hide');
-            
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 300);
-        }
-        
-        function filterReviews() {
-            const selectedCategory = categoryFilter.value;
-            const selectedSubcategory = subcategoryFilter.value;
-            const rows = reviewsTableBody.querySelectorAll('tr');
-            
-            rows.forEach(row => {
-                const rowCategory = row.getAttribute('data-category');
-                const rowSubcategory = row.getAttribute('data-subcategory');
-                
-                let showRow = true;
-                
-                if (selectedCategory !== 'all' && rowCategory !== selectedCategory) {
-                    showRow = false;
-                }
-                
-                if (selectedSubcategory !== 'all' && rowSubcategory !== selectedSubcategory) {
-                    showRow = false;
-                }
-                
-                if (showRow) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+
+        function attachActionListeners() {
+            // Dropdown toggles
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent closing immediately
+                    
+                    // Close others
+                    document.querySelectorAll('.action-menu.show').forEach(m => {
+                        if (m !== this.nextElementSibling) m.classList.remove('show');
+                    });
+
+                    const menu = this.nextElementSibling;
+                    const rect = this.getBoundingClientRect();
+                    menu.style.position = 'fixed';
+                    menu.style.left = (rect.left - 100) + 'px';
+                    menu.style.top = (rect.bottom + 5) + 'px';
+                    menu.classList.toggle('show');
+                });
             });
+
+            // View Review
+            document.querySelectorAll('.action-item[data-action="view-review"]').forEach(item => {
+                item.addEventListener('click', function() {
+                    const tr = this.closest('tr') || getRowFromMenu(this);
+                    const id = tr.getAttribute('data-id');
+                    const review = allReviews.find(r => r.review_id == id);
+                    
+                    if (review) {
+                        document.getElementById('viewProductName').textContent = review.product_name;
+                        document.getElementById('viewCategory').textContent = review.category_name;
+                        document.getElementById('viewSubcategory').textContent = review.subcategory_name;
+                        document.getElementById('viewReviewer').textContent = review.reviewer_name || 'Anonymous';
+                        document.getElementById('viewDate').textContent = new Date(review.created_at).toLocaleDateString();
+                        
+                        const ratingContainer = document.getElementById('viewRating');
+                        ratingContainer.innerHTML = `<div class="star-rating">${renderStars(parseInt(review.rating))}</div>`;
+                        
+                        document.getElementById('viewReviewText').textContent = review.comment;
+                        
+                        viewReviewModal.style.display = 'block';
+                    }
+                    closeAllMenus();
+                });
+            });
+
+            // Delete Review
+            document.querySelectorAll('.action-item[data-action="delete"]').forEach(item => {
+                item.addEventListener('click', function() {
+                    const tr = this.closest('tr') || getRowFromMenu(this);
+                    const id = tr.getAttribute('data-id');
+                    const review = allReviews.find(r => r.review_id == id);
+
+                    if (review) {
+                         document.getElementById('deleteReviewProduct').textContent = review.product_name;
+                         currentDeleteId = id;
+                         currentDeleteRowIndex = tr; // Store row for visual removal if needed
+                         deleteConfirmationModal.style.display = 'block';
+                    }
+                    closeAllMenus();
+                });
+            });
+            
+             // Hide Review
+            document.querySelectorAll('.action-item[data-action="hide-review"]').forEach(item => {
+                item.addEventListener('click', async function() {
+                    const tr = this.closest('tr') || getRowFromMenu(this);
+                    const id = tr.getAttribute('data-id');
+                    
+                    await toggleHideReview(id, 1);
+                    closeAllMenus();
+                });
+            });
+        }
+        
+        async function toggleHideReview(id, isHidden) {
+             try {
+                const response = await fetch('/grizzlypaws-backend/project-root/api/admin_reviews.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        action: 'toggle_hidden',
+                        id: id,
+                        is_hidden: isHidden
+                    })
+                });
+                const res = await response.json();
+                
+                if (res.status === 'success') {
+                    showNotification('success', 'Success', isHidden ? 'Review Hidden API Success' : 'Review Restored API Success');
+                    fetchReviews(); // Reload everything
+                } else {
+                    showNotification('error', 'Error', res.message);
+                }
+            } catch (err) {
+                console.error(err);
+                showNotification('error', 'Error', 'Failed to update review status');
+            }
         }
         
         function updateHiddenReviewsDisplay() {
@@ -510,13 +536,13 @@
                 reviewElement.className = 'hidden-review-item';
                 reviewElement.innerHTML = `
                     <div class="hidden-review-content">
-                        <div class="hidden-review-product">${review.product}</div>
+                        <div class="hidden-review-product">${review.product_name}</div>
                         <div class="hidden-review-details">
-                            <span class="hidden-review-reviewer">${review.reviewer}</span>
-                            <span class="hidden-review-date">${review.date}</span>
+                            <span class="hidden-review-reviewer">${review.reviewer_name || 'Anonymous'}</span>
+                            <span class="hidden-review-date">${new Date(review.created_at).toLocaleDateString()}</span>
                         </div>
                     </div>
-                    <button class="restore-review-btn" data-index="${index}">
+                    <button class="restore-review-btn" data-id="${review.review_id}">
                         <i class="fas fa-eye"></i> Restore
                     </button>
                 `;
@@ -524,186 +550,123 @@
             });
             
             document.querySelectorAll('.restore-review-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const index = parseInt(this.getAttribute('data-index'));
-                    restoreReview(index);
+                btn.addEventListener('click', async function() {
+                    const id = this.getAttribute('data-id');
+                    await toggleHideReview(id, 0); // Restore (unhide)
                 });
             });
         }
         
-        function hideReview(rowIndex) {
-            const row = reviewsTableBody.children[rowIndex];
-            const productName = row.cells[0].textContent;
-            const category = row.cells[1].textContent;
-            const subcategory = row.cells[2].textContent;
-            const reviewer = row.cells[4].textContent;
-            const date = row.cells[5].textContent;
-            const rating = reviewData[rowIndex].rating;
-            const reviewText = reviewData[rowIndex].text;
-            
-            hiddenReviews.push({
-                product: productName,
-                category: category,
-                subcategory: subcategory,
-                reviewer: reviewer,
-                date: date,
-                rating: rating,
-                text: reviewText,
-                rowIndex: rowIndex
-            });
-            
-            row.style.display = 'none';
-            
-            showNotification('success', 'Review Hidden', `Review for "${productName}" has been hidden successfully!`);
+        // Helper to find row when menu is fixed positioned
+        function getRowFromMenu(menuItem) {
+             // Since we move menus to body/fixed, finding "closest tr" might fail if we don't handle DOM structure carefully. 
+             // But in my render logic, menu is inside .action-dropdown inside TD inside TR. 
+             // IF I use fixed positioning logic from previous code, the menu might be detached visually but still in DOM? 
+             // Actually previous code moved it? No, previous code just set style.position fixed. It stays in DOM.
+             return menuItem.closest('tr');
         }
-        
-        function restoreReview(index) {
-            const review = hiddenReviews[index];
-            
-            hiddenReviews.splice(index, 1);
-            
-            const row = reviewsTableBody.children[review.rowIndex];
-            row.style.display = '';
-            
-            updateHiddenReviewsDisplay();
-            
-            showNotification('success', 'Review Restored', `Review for "${review.product}" has been restored.`);
+
+        function closeAllMenus() {
+            document.querySelectorAll('.action-menu').forEach(m => m.classList.remove('show'));
         }
-        
-        function restoreAllReviews() {
-            hiddenReviews.forEach(review => {
-                const row = reviewsTableBody.children[review.rowIndex];
-                row.style.display = '';
-            });
-            
-            hiddenReviews = [];
-            updateHiddenReviewsDisplay();
-            hiddenReviewsModal.style.display = 'none';
-            
-            showNotification('success', 'All Reviews Restored', 'All hidden reviews have been restored.');
-        }
-        
-        categoryFilter.addEventListener('change', function() {
-            populateSubcategories(this.value);
+
+        // Close menus on click outside
+        document.addEventListener('click', function(e) {
+             if (!e.target.closest('.action-btn')) {
+                closeAllMenus();
+             }
         });
+
+        // Delete Confirm
+        deleteBtn.addEventListener('click', async function() {
+            if (currentDeleteId) {
+                try {
+                    const response = await fetch('/grizzlypaws-backend/project-root/api/admin_reviews.php', {
+                        method: 'DELETE',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({id: currentDeleteId})
+                    });
+                    const res = await response.json();
+                    
+                    if (res.status === 'success') {
+                        showNotification('success', 'Success', 'Review deleted successfully');
+                        fetchReviews(); // Reload table
+                    } else {
+                        showNotification('error', 'Error', res.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showNotification('error', 'Error', 'Failed to delete review');
+                }
+                deleteConfirmationModal.style.display = 'none';
+                currentDeleteId = null;
+            }
+        });
+
+        // Notification Logic
+        function showNotification(type, title, message) {
+            // Re-use existing logic or simplify
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-icon"><i class="fas fa-info-circle"></i></div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+            `;
+            notificationContainer.appendChild(notification);
+            setTimeout(() => notification.classList.add('show'), 10);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Modal Close Logic
+        cancelBtns.forEach(btn => btn.addEventListener('click', function() {
+            this.closest('.modal').style.display = 'none';
+        }));
         
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) e.target.style.display = 'none';
+        });
+
+        // Filter Logic (Simplified client-side filtering for now)
+        function filterReviews() {
+             const cat = categoryFilter.value.toLowerCase();
+             const sub = subcategoryFilter.value.toLowerCase();
+             
+             const filtered = allReviews.filter(r => {
+                 const rCat = (r.category_name || '').toLowerCase();
+                 const rSub = (r.subcategory_name || '').toLowerCase().replace(/\s+/g, '-');
+                 
+                 const catMatch = cat === 'all' || rCat === cat;
+                 const subMatch = sub === 'all' || rSub === sub;
+                 
+                 return catMatch && subMatch;
+             });
+             renderReviewsTable(filtered);
+        }
+
+        categoryFilter.addEventListener('change', filterReviews);
         subcategoryFilter.addEventListener('change', filterReviews);
-        
+
+        // View Hidden Reviews Button
         viewHiddenReviewsBtn.addEventListener('click', function() {
             updateHiddenReviewsDisplay();
             hiddenReviewsModal.style.display = 'block';
         });
-        
-        restoreAllBtn.addEventListener('click', restoreAllReviews);
-        
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.action-dropdown')) {
-                document.querySelectorAll('.action-menu').forEach(menu => {
-                    menu.classList.remove('show');
-                });
-            }
-            
-            if (e.target.closest('.action-btn')) {
-                const actionBtn = e.target.closest('.action-btn');
-                const menu = actionBtn.nextElementSibling;
-                
-                document.querySelectorAll('.action-menu').forEach(m => {
-                    if (m !== menu) {
-                        m.classList.remove('show');
-                    }
-                });
-                
-                const rect = actionBtn.getBoundingClientRect();
-                menu.style.position = 'fixed';
-                menu.style.left = (rect.left - 180) + 'px';
-                menu.style.top = (rect.bottom + 5) + 'px';
-                
-                menu.classList.toggle('show');
-            }
-        });
-        
-        document.querySelectorAll('.action-item[data-action="view-review"]').forEach(item => {
-    item.addEventListener('click', function() {
-        const row = this.closest('tr');
-        const rowIndex = Array.from(row.parentNode.children).indexOf(row);
-        
-        const review = reviewData[rowIndex];
-        
-        document.getElementById('viewProductName').textContent = review.product;
-        document.getElementById('viewCategory').textContent = review.category;
-        document.getElementById('viewSubcategory').textContent = review.subcategory;
-        document.getElementById('viewReviewer').textContent = review.reviewer;
-        document.getElementById('viewDate').textContent = review.date;
-        
-        // Display rating as stars in the rating field
-        const ratingContainer = document.getElementById('viewRating');
-        ratingContainer.innerHTML = '';
-        const starRating = document.createElement('div');
-        starRating.className = 'star-rating';
-        for (let i = 1; i <= 5; i++) {
-            starRating.innerHTML += `<i class="fa${i <= review.rating ? 's' : 'r'} fa-star"></i>`;
-        }
-        ratingContainer.appendChild(starRating);
-        
-        document.getElementById('viewReviewText').textContent = review.text;
-        
-        viewReviewModal.style.display = 'block';
-        this.closest('.action-menu').classList.remove('show');
-    });
-});
 
-        document.querySelectorAll('.action-item[data-action="hide-review"]').forEach(item => {
-            item.addEventListener('click', function() {
-                const row = this.closest('tr');
-                const rowIndex = Array.from(row.parentNode.children).indexOf(row);
-                
-                hideReview(rowIndex);
-                this.closest('.action-menu').classList.remove('show');
-            });
+        // Restore All Logic
+        restoreAllBtn.addEventListener('click', async function() {
+             // In real app we might need a batch API or loop. 
+             // Loops for now
+             for (let r of hiddenReviews) {
+                 await toggleHideReview(r.review_id, 0);
+             }
+            hiddenReviewsModal.style.display = 'none';
         });
-
-        document.querySelectorAll('.action-item[data-action="delete"]').forEach(item => {
-            item.addEventListener('click', function() {
-                const row = this.closest('tr');
-                const productName = row.cells[1].textContent;
-                
-                document.getElementById('deleteReviewProduct').textContent = productName;
-                currentDeleteRowIndex = Array.from(row.parentNode.children).indexOf(row);
-                deleteConfirmationModal.style.display = 'block';
-                this.closest('.action-menu').classList.remove('show');
-            });
-        });
-        
-        cancelBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const modal = this.closest('.modal');
-                modal.style.display = 'none';
-                if (modal.id === 'deleteConfirmationModal') {
-                    currentDeleteRowIndex = null;
-                }
-            });
-        });
-        
-        deleteBtn.addEventListener('click', function() {
-            if (currentDeleteRowIndex !== null) {
-                const row = reviewsTableBody.children[currentDeleteRowIndex];
-                const productName = row.cells[1].textContent;
-                
-                row.remove();
-                deleteConfirmationModal.style.display = 'none';
-                currentDeleteRowIndex = null;
-                
-                showNotification('success', 'Success', `Review for "${productName}" has been deleted`);
-            }
-        });
-        
-        window.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal')) {
-                e.target.style.display = 'none';
-            }
-        });
-
-        populateSubcategories('all');
     });
 </script>
 
